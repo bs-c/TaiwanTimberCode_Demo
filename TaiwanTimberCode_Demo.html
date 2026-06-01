@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>木竹構材設計檢核 — 單支構材</title>
+<style>
+/* ── reset ── */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Microsoft JhengHei",Arial,sans-serif;background:#f5f7fa;color:#2d3748;font-size:14px}
+
+/* ── header ── */
+h1{background:linear-gradient(135deg,#2d6a4f,#52b788);color:#fff;padding:16px 24px;font-size:19px;letter-spacing:1px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+h1 .subtitle{font-size:12px;font-weight:400;opacity:.85}
+.btn-pdf{padding:7px 16px;background:#fff;color:#2d6a4f;border:none;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.5px}
+.btn-pdf:hover{background:#e6f4ed}
+
+/* ── tabs ── */
+.tabs{display:flex;gap:0;background:#fff;border-bottom:2px solid #e2e8f0;padding:0 16px}
+.tab{padding:10px 18px;font-size:13px;font-weight:600;color:#718096;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px}
+.tab.active{color:#2d6a4f;border-bottom-color:#2d6a4f}
+
+/* ── container ── */
+.container{max-width:1120px;margin:0 auto;padding:16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* ── card ── */
+.card{background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.1);padding:16px;margin-bottom:14px}
+.card h3{font-size:13px;color:#2d6a4f;font-weight:700;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid #b7e4c7}
+.card-last{margin-bottom:0}
+
+/* ── form ── */
+.field{margin-bottom:10px}
+.field label{display:block;font-size:12px;color:#4a5568;margin-bottom:3px}
+.field input,.field select{width:100%;padding:6px 8px;border:1px solid #cbd5e0;border-radius:4px;font-size:13px;color:#2d3748}
+.field input:focus,.field select:focus{outline:none;border-color:#52b788;box-shadow:0 0 0 2px rgba(82,183,136,.2)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.field-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.btn-calc{width:100%;padding:12px;background:linear-gradient(135deg,#2d6a4f,#52b788);color:#fff;border:none;border-radius:6px;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;letter-spacing:1px}
+.btn-calc:hover{opacity:.9}
+
+/* ── result ── */
+.result-section{margin-bottom:12px}
+.result-section h4{font-size:11px;color:#718096;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.dcr-row{display:flex;align-items:center;margin-bottom:6px;gap:8px}
+.dcr-label{font-size:12px;color:#4a5568;width:200px;flex-shrink:0}
+.dcr-bar-wrap{flex:1;background:#edf2f7;border-radius:20px;height:13px;overflow:hidden}
+.dcr-bar{height:13px;border-radius:20px;transition:width .4s}
+.dcr-val{font-size:13px;font-weight:700;width:52px;text-align:right;flex-shrink:0}
+.dcr-status{font-size:11px;width:34px;text-align:center;border-radius:10px;padding:1px 4px;font-weight:700;flex-shrink:0}
+.ok{background:#c6f6d5;color:#276749}
+.ng{background:#fed7d7;color:#9b2335}
+.info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:4px}
+.info-box{background:#f7fafc;border:1px solid #e2e8f0;border-radius:4px;padding:5px 7px;font-size:11px}
+.info-box .lbl{color:#718096;margin-bottom:2px}
+.info-box .val{font-weight:700;color:#2d3748;font-size:12px}
+.sep{height:1px;background:#e2e8f0;margin:10px 0}
+.alert{padding:7px 10px;border-radius:4px;font-size:12px;margin-bottom:8px;background:#fffbeb;border-left:3px solid #d69e2e;color:#744210}
+.tag{display:inline-block;padding:1px 6px;border-radius:8px;font-size:10px;font-weight:700;margin-left:4px;vertical-align:middle}
+.tag-L{background:#bee3f8;color:#2c5282}
+.tag-S{background:#fed7d7;color:#9b2335}
+
+/* ── formula section ── */
+.formula-section{margin-bottom:20px}
+.formula-section h3{font-size:13px;color:#2d6a4f;font-weight:700;margin-bottom:10px;padding:6px 10px;background:#f0faf4;border-left:4px solid #52b788;border-radius:0 4px 4px 0}
+.formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.fbox{background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:12px}
+.fbox h4{font-size:12px;color:#4a5568;font-weight:700;margin-bottom:8px}
+.feq{background:#f7fafc;border-radius:4px;padding:6px 10px;font-family:"Courier New",monospace;font-size:12px;color:#2d3748;margin-bottom:5px;line-height:1.7}
+.feq .cond{color:#718096;font-size:11px}
+.fnote{font-size:11px;color:#718096;margin-top:6px;line-height:1.6}
+table.ftbl{width:100%;border-collapse:collapse;font-size:12px}
+table.ftbl th{background:#f0faf4;padding:5px 8px;text-align:left;font-weight:700;border:1px solid #e2e8f0}
+table.ftbl td{padding:5px 8px;border:1px solid #e2e8f0}
+
+/* ── print area (hidden on screen) ── */
+#printArea{display:none}
+
+/* ── responsive ── */
+@media(max-width:700px){
+  .grid2,.formula-grid{grid-template-columns:1fr}
+  .info-grid{grid-template-columns:repeat(2,1fr)}
+  .dcr-label{width:150px}
+}
+
+/* ══════════════ PRINT CSS ══════════════ */
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  body{background:#fff;font-size:11pt}
+  .tabs,.tab-content:not(#tc-report),header > .btn-pdf{display:none!important}
+  #printArea{display:block!important}
+  .no-print{display:none!important}
+  .print-page{page-break-after:always}
+  h1{background:none!important;color:#2d6a4f!important;border-bottom:2px solid #2d6a4f;padding:8px 0}
+  .btn-pdf{display:none}
+
+  .pr-title{font-size:16pt;font-weight:700;color:#2d6a4f;margin-bottom:4px}
+  .pr-sub{font-size:10pt;color:#718096;margin-bottom:20px}
+  .pr-section{margin-bottom:14px}
+  .pr-section h3{font-size:11pt;font-weight:700;color:#2d6a4f;border-bottom:1px solid #b7e4c7;padding-bottom:3px;margin-bottom:8px}
+  table.ptbl{width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:8px}
+  table.ptbl th{background:#e6f4ed;padding:4px 8px;text-align:left;border:1px solid #b7e4c7;font-weight:700}
+  table.ptbl td{padding:4px 8px;border:1px solid #d1e7dd}
+  table.ptbl td.num{text-align:right;font-family:"Courier New",monospace}
+  table.ptbl td.eq{font-family:"Courier New",monospace;font-size:9pt;color:#4a5568}
+  .pr-ok{color:#276749;font-weight:700}
+  .pr-ng{color:#9b2335;font-weight:700}
+  .pr-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dotted #e2e8f0;font-size:10pt}
+  .pr-row .pr-val{font-family:"Courier New",monospace;font-weight:700}
+  .pr-verdict{font-size:14pt;font-weight:700;text-align:center;padding:10px;border:2px solid;border-radius:4px;margin-top:12px}
+  .pr-verdict.ok{color:#276749;border-color:#276749;background:#f0fff4}
+  .pr-verdict.ng{color:#9b2335;border-color:#9b2335;background:#fff5f5}
+}
+</style>
+</head>
+<body>
+
+<h1>
+  <span>木竹構材設計檢核 <span class="subtitle">· 單支構材 · 纖維方向容許應力法</span></span>
+  <button class="btn-pdf" onclick="exportPDF()">&#128438; 匯出 PDF 計算書</button>
+</h1>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('input')">&#9998; 檢核輸入</div>
+  <div class="tab" onclick="showTab('formula')">&#128218; 公式說明</div>
+</div>
+
+<!-- ══ TAB: 輸入 + 結果 ══ -->
+<div id="tc-input" class="tab-content">
+<div class="container">
+<div class="grid2">
+
+<!-- LEFT -->
+<div>
+  <div class="card">
+    <h3>&#9654; 材料性質</h3>
+    <div class="field">
+      <label>材料等級</label>
+      <select id="matGrade" onchange="onMaterialChange()"></select>
+    </div>
+    <div class="info-grid" id="matInfo" style="display:none"></div>
+  </div>
+
+  <div class="card">
+    <h3>&#9654; 斷面參數（矩形）</h3>
+    <div class="field-row">
+      <div class="field"><label>寬 b (cm)</label><input type="number" id="b" value="20" step="0.5" min="1" oninput="updateSecInfo()"></div>
+      <div class="field"><label>高 h (cm)</label><input type="number" id="h" value="40" step="0.5" min="1" oninput="onMaterialChange()"></div>
+    </div>
+    <div class="info-grid" id="secInfo" style="display:none"></div>
+  </div>
+
+  <div class="card">
+    <h3>&#9654; 計算長度</h3>
+    <div class="field"><label>構材長度 L₀ (cm)</label><input type="number" id="L0" value="300" step="1" min="1"></div>
+    <div class="field-row">
+      <div class="field"><label>有效長度比 Kx</label><input type="number" id="Kx" value="1.0" step="0.1" min="0.1"></div>
+      <div class="field"><label>有效長度比 Ky</label><input type="number" id="Ky" value="1.0" step="0.1" min="0.1"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>無支撐比 (Lb/L₀)x</label><input type="number" id="LbL0x" value="1.0" step="0.1" min="0.05" max="1.0"></div>
+      <div class="field"><label>無支撐比 (Lb/L₀)y</label><input type="number" id="LbL0y" value="1.0" step="0.1" min="0.05" max="1.0"></div>
+    </div>
+  </div>
+
+  <div class="card card-last">
+    <h3>&#9654; 設計載重（kgf, kgf-cm）</h3>
+    <div class="alert">壓力 P 輸入負值，拉力輸入正值</div>
+    <div style="font-size:12px;color:#2c5282;font-weight:700;margin-bottom:6px">&#9632; 長期載重（D+L）</div>
+    <div class="field-row3">
+      <div class="field"><label>P<sub>L</sub> (kgf)</label><input type="number" id="PL" value="-5000" step="100"></div>
+      <div class="field"><label>M3<sub>L</sub> (kgf-cm)</label><input type="number" id="M3L" value="10000" step="100"></div>
+      <div class="field"><label>M2<sub>L</sub> (kgf-cm)</label><input type="number" id="M2L" value="2000" step="100"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>V3<sub>L</sub> (kgf)</label><input type="number" id="V3L" value="200" step="10"></div>
+      <div class="field"><label>V2<sub>L</sub> (kgf)</label><input type="number" id="V2L" value="50" step="10"></div>
+    </div>
+    <div class="sep"></div>
+    <div style="font-size:12px;color:#9b2335;font-weight:700;margin-bottom:6px">&#9632; 短期載重（D+L+W / E）</div>
+    <div class="field-row3">
+      <div class="field"><label>P<sub>S</sub> (kgf)</label><input type="number" id="PS" value="-8000" step="100"></div>
+      <div class="field"><label>M3<sub>S</sub> (kgf-cm)</label><input type="number" id="M3S" value="25000" step="100"></div>
+      <div class="field"><label>M2<sub>S</sub> (kgf-cm)</label><input type="number" id="M2S" value="5000" step="100"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>V3<sub>S</sub> (kgf)</label><input type="number" id="V3S" value="500" step="10"></div>
+      <div class="field"><label>V2<sub>S</sub> (kgf)</label><input type="number" id="V2S" value="120" step="10"></div>
+    </div>
+    <button class="btn-calc" onclick="calculate()">&#9660; 執行設計檢核</button>
+  </div>
+</div>
+
+<!-- RIGHT: results -->
+<div>
+  <div class="card" style="position:sticky;top:12px">
+    <h3>&#9654; 檢核結果</h3>
+    <div id="resultBody" style="color:#a0aec0;text-align:center;padding:40px 0;font-size:13px">
+      請輸入參數後點選「執行設計檢核」
+    </div>
+  </div>
+</div>
+</div><!-- /grid2 -->
+</div><!-- /container -->
+</div><!-- /tc-input -->
+
+<!-- ══ TAB: 公式說明 ══ -->
+<div id="tc-formula" class="tab-content" style="display:none">
+<div class="container">
+
+  <div class="formula-section">
+    <h3>一、斷面幾何性質（矩形斷面，寬 b × 高 h）</h3>
+    <div class="formula-grid">
+      <div class="fbox">
+        <h4>斷面積 &amp; 慣性矩</h4>
+        <div class="feq">A = b × h　　(cm²)</div>
+        <div class="feq">Ix = b·h³ / 12　(cm⁴，強軸 x-x)</div>
+        <div class="feq">Iy = h·b³ / 12　(cm⁴，弱軸 y-y)</div>
+        <div class="fnote">迴轉半徑：ix = √(Ix/A) = h/√12，iy = b/√12</div>
+      </div>
+      <div class="fbox">
+        <h4>彈性斷面模數</h4>
+        <div class="feq">Zex = b·h² / 6　(cm³，x-x 軸)</div>
+        <div class="feq">Zey = h·b² / 6　(cm³，y-y 軸)</div>
+        <div class="fnote">設計撓曲應力：Fb = |M| / Ze</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="formula-section">
+    <h3>二、長期容許應力（短期容許應力之 1/2）</h3>
+    <div class="fbox" style="margin-bottom:10px">
+      <div class="feq">Lfc = Sfc / 2　　（長期壓應力）</div>
+      <div class="feq">Lft = Sft / 2　　（長期拉應力）</div>
+      <div class="feq">Lfb = Sfb / 2　　（長期撓曲應力）</div>
+      <div class="feq">Lfs ← 依樹種分類查表（另列）</div>
+      <div class="fnote">Sfc, Sft, Sfb 依材料等級查「材料性質」表；Lfs 依樹種分類查剪力表。</div>
+    </div>
+    <table class="ftbl">
+      <thead><tr><th>樹種分類</th><th>長期 Lfsx (kgf/cm²)</th><th>長期 Lfsy (kgf/cm²)</th><th>短期 Sfsx</th><th>短期 Sfsy</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>16</td><td>14</td><td>32</td><td>28</td></tr>
+        <tr><td>2</td><td>14</td><td>12</td><td>28</td><td>24</td></tr>
+        <tr><td>3</td><td>12</td><td>10</td><td>24</td><td>20</td></tr>
+        <tr><td>4</td><td>11</td><td>9</td><td>22</td><td>18</td></tr>
+        <tr><td>5</td><td>10</td><td>8</td><td>20</td><td>16</td></tr>
+        <tr><td>6</td><td>10</td><td>7</td><td>20</td><td>14</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="formula-section">
+    <h3>三、挫屈細長比 λ</h3>
+    <div class="formula-grid">
+      <div class="fbox">
+        <h4>有效計算長度</h4>
+        <div class="feq">lkx = Kx × (Lb/L₀)x × L₀</div>
+        <div class="feq">lky = Ky × (Lb/L₀)y × L₀</div>
+        <div class="fnote">Kx, Ky：有效長度比（兩端固接=0.5；一端固一端鉸=0.7；兩端鉸=1.0；懸臂=2.0）</div>
+      </div>
+      <div class="fbox">
+        <h4>細長比</h4>
+        <div class="feq">λx = lkx / ix</div>
+        <div class="feq">λy = lky / iy</div>
+        <div class="feq">λ = max(λx, λy)　（取控制值）</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="formula-section">
+    <h3>四、挫屈折減係數 η</h3>
+    <div class="fbox">
+      <div class="feq">λ ≤ 30　　　→　η = 1.000<span class="cond">（短柱，無挫屈折減）</span></div>
+      <div class="feq">30 &lt; λ ≤ 100　→　η = 1.3 − 0.01·λ</div>
+      <div class="feq">λ &gt; 100　　→　η = 3000 / λ²</div>
+      <div class="fnote">長期容許挫屈壓應力 Lfk = η·Lfc；短期 Sfk = η·Sfc</div>
+    </div>
+  </div>
+
+  <div class="formula-section">
+    <h3>五、尺寸調整係數 Cf（撓曲）</h3>
+    <div class="fbox">
+      <div class="feq">h ≥ 30 cm　→　Cf = (30/h)<sup>1/9</sup></div>
+      <div class="feq">h &lt; 30 cm　→　Cf = 1.0</div>
+      <div class="fnote">x-x 向以 h（斷面深度）代入；y-y 向以 b（斷面寬度）代入。<br>尺寸因子對大斷面有折減效果（h=30 時 Cf=1.0；h=45 時 Cf≈0.96）。</div>
+    </div>
+  </div>
+
+  <div class="formula-section">
+    <h3>六、橫向挫屈調整係數 Cb（強軸撓曲）</h3>
+    <div class="formula-grid">
+      <div class="fbox">
+        <h4>計算參數</h4>
+        <div class="feq">Ck = 0.8 × √(E//y-y / Lfb-xx)</div>
+        <div class="feq">Cs = √(le·h / b²)</div>
+        <div class="fnote">le = (Lb/L₀)x × L₀（強軸有效撓曲長度）<br>E//y-y：y-y 向彈性模數；Lfb-xx：強軸長期容許撓曲應力</div>
+      </div>
+      <div class="fbox">
+        <h4>Cb 判斷</h4>
+        <div class="feq">Cs ≤ 10　　→　Cb = 1.000</div>
+        <div class="feq">10 &lt; Cs &lt; Ck　→　Cb = 1 − (Cs/Ck)^(4/3)</div>
+        <div class="feq">Cs ≥ Ck　　→　Cb = 0.4·E//y-y / (Cs²·Lfb-xx)</div>
+        <div class="fnote">弱軸撓曲通常不發生橫向挫屈，取 Cb-yy = 1.0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="formula-section">
+    <h3>七、軸力應力比 DCRc / DCRt</h3>
+    <div class="formula-grid">
+      <div class="fbox">
+        <h4>受壓（P &lt; 0）</h4>
+        <div class="feq">設計壓應力：Fc = |P| / A</div>
+        <div class="feq">長期：DCRc,L = Fc / (η·Lfc) = Fc / Lfk</div>
+        <div class="feq">短期：DCRc,S = Fc / (η·Sfc) = Fc / Sfk</div>
+      </div>
+      <div class="fbox">
+        <h4>受拉（P ≥ 0）</h4>
+        <div class="feq">設計拉應力：Ft = P / A</div>
+        <div class="feq">長期：DCRt,L = Ft / Lft</div>
+        <div class="feq">短期：DCRt,S = Ft / Sft</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="formula-section">
+    <h3>八、撓曲應力比 DCRb</h3>
+    <div class="fbox">
+      <div class="feq">設計撓曲應力：Fb3 = |M3| / Zex　（x-x 強軸）</div>
+      <div class="feq">　　　　　　　Fb2 = |M2| / Zey　（y-y 弱軸）</div>
+      <div class="feq">長期：DCRb3,L = Fb3 / (Lfb-xx · Cfx · Cbx)</div>
+      <div class="feq">　　　DCRb2,L = Fb2 / (Lfb-yy · Cfy · Cby)</div>
+      <div class="feq">短期：DCRb3,S = Fb3 / (Sfb-xx · Cfx · Cbx)</div>
+      <div class="feq">　　　DCRb2,S = Fb2 / (Sfb-yy · Cfy · Cby)</div>
+    </div>
+  </div>
+
+  <div class="formula-section">
+    <h3>九、P-M 複合應力比（軸彎交互作用）</h3>
+    <div class="fbox">
+      <div class="feq">長期：DCRP-M,L = DCRb3,L + DCRb2,L + DCRc,L （或 DCRt,L）</div>
+      <div class="feq">短期：DCRP-M,S = DCRb3,S + DCRb2,S + DCRc,S （或 DCRt,S）</div>
+      <div class="fnote">&#9654; 檢核條件：DCRP-M ≤ 1.0（超過表示不足）</div>
+    </div>
+  </div>
+
+  <div class="formula-section">
+    <h3>十、剪應力比 DCRs</h3>
+    <div class="fbox">
+      <div class="feq">剪應力斷面因子 α = 1.5（矩形斷面）</div>
+      <div class="feq">設計剪應力：Fs3 = V3 / A，Fs2 = V2 / A</div>
+      <div class="feq">長期：DCRs3,L = α·Fs3 / Lfsx　；　DCRs2,L = α·Fs2 / Lfsy</div>
+      <div class="feq">短期：DCRs3,S = α·Fs3 / Sfsx　；　DCRs2,S = α·Fs2 / Sfsy</div>
+      <div class="fnote">&#9654; 檢核條件：DCRs ≤ 1.0</div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+</div><!-- /tc-formula -->
+
+<!-- ══ PRINT AREA ══ -->
+<div id="printArea"></div>
+
+<!-- ═══════ SCRIPT ═══════ -->
+<script>
+// ── Tab control ──────────────────────────────
+function showTab(id){
+  document.querySelectorAll('.tab-content').forEach(el=>el.style.display='none');
+  document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
+  document.getElementById('tc-'+id).style.display='block';
+  const idx={'input':0,'formula':1};
+  document.querySelectorAll('.tab')[idx[id]].classList.add('active');
+}
+
+// ── Material DB ──────────────────────────────
+// [grade, speciesClass, Sfsx, Sfsy, Sfc, Sft, SfbxP, SfbyP, SfbxN, SfbyN, Exx, Eyy]
+const MAT_DB = [
+  ['E170',3,24,20,250,220,330,236,330,236,170000,155000],
+  ['E150',3,24,20,220,190,290,204,290,204,150000,135000],
+  ['E135',3,24,20,200,170,250,184,250,184,135000,120000],
+  ['E120',3,24,20,170,150,220,160,220,160,120000,110000],
+  ['E105',3,24,20,150,130,200,144,200,144,105000,95000],
+  ['E95',3,24,20,140,120,180,136,180,136,95000,85000],
+  ['E85',3,24,20,130,110,170,120,170,120,85000,75000],
+  ['E75',3,24,20,120,100,160,104,160,104,75000,65000],
+  ['E65',3,24,20,110,90,150,100,150,100,65000,60000],
+  ['E160',3,24,20,240,210,320,212,230,212,160000,145000],
+  ['E140',3,24,20,210,180,280,180,190,180,140000,130000],
+  ['E125',3,24,20,190,160,240,160,170,160,125000,115000],
+  ['E110',3,24,20,160,140,210,144,160,144,110000,100000],
+  ['E100',3,24,20,150,120,190,128,150,128,100000,90000],
+  ['E90',3,24,20,140,120,170,120,140,120,90000,80000],
+  ['E80',3,24,20,120,100,160,100,130,100,80000,70000],
+  ['E70',3,24,20,110,90,150,92,120,92,70000,60000],
+  ['E60',3,24,20,100,90,140,88,110,88,60000,55000],
+  ['E190F615',3,24,20,330,290,410,410,410,410,190000,190000],
+  ['E170F540',3,24,20,300,260,360,360,360,360,170000,170000],
+  ['E150F465',3,24,20,260,230,310,310,310,310,150000,150000],
+  ['E135F405',3,24,20,220,190,270,270,270,270,135000,135000],
+  ['E120F375',3,24,20,200,170,250,250,250,250,120000,120000],
+  ['E105F345',3,24,20,190,160,230,230,230,230,105000,105000],
+  ['E95F315',3,24,20,170,150,210,210,210,210,95000,95000],
+  ['E85F300',3,24,20,160,140,200,200,200,200,85000,85000],
+  ['E75F270',3,24,20,150,130,180,180,180,180,75000,75000],
+  ['E65F255',3,24,20,140,120,170,170,170,170,65000,65000],
+  ['E190F555',3,24,20,300,290,370,370,370,370,190000,190000],
+  ['E170F495',3,24,20,270,260,330,330,330,330,170000,170000],
+  ['E150F435',3,24,20,240,230,290,290,290,290,150000,150000],
+  ['E135F375',3,24,20,200,190,250,250,250,250,135000,135000],
+  ['E120F330',3,24,20,180,170,220,220,220,220,120000,120000],
+  ['E105F300',3,24,20,170,160,200,200,200,200,105000,105000],
+  ['E95F285',3,24,20,160,150,190,190,190,190,95000,95000],
+  ['E85F270',3,24,20,150,140,180,180,180,180,85000,85000],
+  ['E75F255',3,24,20,130,130,170,170,170,170,75000,75000],
+  ['E65F240',3,24,20,120,120,160,160,160,160,65000,65000],
+  ['E190F510',3,24,20,300,290,340,340,340,340,190000,190000],
+  ['E170F450',3,24,20,270,260,300,300,300,300,170000,170000],
+  ['E150F390',3,24,20,240,230,260,260,260,260,150000,150000],
+  ['E135F345',3,24,20,200,190,230,230,230,230,135000,135000],
+  ['E120F300',3,24,20,180,170,200,200,200,200,120000,120000],
+  ['E105F285',3,24,20,170,160,190,190,190,190,105000,105000],
+  ['E95F270',3,24,20,160,150,180,180,180,180,95000,95000],
+  ['E85F255',3,24,20,150,140,170,170,170,170,85000,85000],
+  ['E75F240',3,24,20,130,130,160,160,160,160,75000,75000],
+  ['E65F225',3,24,20,120,120,150,150,150,150,65000,65000],
+  ['Bamboo-Guei',1,77.6,77.6,638.7,1283.5,311,311,311,311,59857,59857],
+  ['E120-F330',3,24,20,180,170,220,220,220,220,120000,120000],
+];
+
+const SHEAR_LONG = {1:[16,14],2:[14,12],3:[12,10],4:[11,9],5:[10,8],6:[10,7]};
+
+(function init(){
+  const sel=document.getElementById('matGrade');
+  MAT_DB.forEach(m=>{const o=document.createElement('option');o.value=m[0];o.textContent=m[0];sel.appendChild(o);});
+  onMaterialChange();
+})();
+
+function getMat(g){return MAT_DB.find(m=>m[0]===g);}
+
+function onMaterialChange(){
+  const m=getMat(document.getElementById('matGrade').value);
+  if(!m) return;
+  const [,cls,Sfsx,Sfsy,Sfc,Sft,SfbxP,SfbyP,,,Exx,Eyy]=m;
+  const sh=SHEAR_LONG[cls]||[12,10];
+  const el=document.getElementById('matInfo');
+  el.style.display='grid';
+  el.innerHTML=`
+    <div class="info-box"><div class="lbl">E// x-x (kgf/cm²)</div><div class="val">${Exx.toLocaleString()}</div></div>
+    <div class="info-box"><div class="lbl">E// y-y (kgf/cm²)</div><div class="val">${Eyy.toLocaleString()}</div></div>
+    <div class="info-box"><div class="lbl">Sfc / Lfc</div><div class="val">${Sfc} / ${Sfc/2}</div></div>
+    <div class="info-box"><div class="lbl">Sft / Lft</div><div class="val">${Sft} / ${Sft/2}</div></div>
+    <div class="info-box"><div class="lbl">Sfb-x(+) / Lfb</div><div class="val">${SfbxP} / ${SfbxP/2}</div></div>
+    <div class="info-box"><div class="lbl">Sfb-y(+) / Lfb</div><div class="val">${SfbyP} / ${SfbyP/2}</div></div>
+    <div class="info-box"><div class="lbl">Sfsx / Lfsx</div><div class="val">${Sfsx} / ${sh[0]}</div></div>
+    <div class="info-box"><div class="lbl">Sfsy / Lfsy</div><div class="val">${Sfsy} / ${sh[1]}</div></div>`;
+  updateSecInfo();
+}
+
+function updateSecInfo(){
+  const b=+document.getElementById('b').value||0;
+  const h=+document.getElementById('h').value||0;
+  if(!b||!h) return;
+  const A=b*h,Zex=b*h*h/6,Zey=h*b*b/6,Ix=b*h*h*h/12;
+  const el=document.getElementById('secInfo');
+  el.style.display='grid';
+  el.innerHTML=`
+    <div class="info-box"><div class="lbl">A (cm²)</div><div class="val">${A.toFixed(1)}</div></div>
+    <div class="info-box"><div class="lbl">Zex (cm³)</div><div class="val">${Zex.toFixed(1)}</div></div>
+    <div class="info-box"><div class="lbl">Zey (cm³)</div><div class="val">${Zey.toFixed(1)}</div></div>
+    <div class="info-box"><div class="lbl">Ix (cm⁴)</div><div class="val">${Ix.toFixed(0)}</div></div>`;
+}
+
+// ── Formulas ─────────────────────────────────
+function etaFn(lam){
+  if(lam<=30) return 1.0;
+  if(lam<=100) return 1.3-0.01*lam;
+  return 3000/(lam*lam);
+}
+function cfFn(d){return d>=30?Math.pow(30/d,1/9):1.0;}
+function cbFn(le,h,b,Eyy,Lfbxx){
+  if(b<=0||h<=0||Lfbxx<=0) return 1.0;
+  const Ck=0.8*Math.sqrt(Eyy/Lfbxx);
+  const Cs=Math.sqrt(le*h/(b*b));
+  if(Cs<=10) return 1.0;
+  if(Cs<Ck) return 1-Math.pow(Cs/Ck,4/3);
+  return Math.max(0.1,0.4*Eyy/(Cs*Cs*Lfbxx));
+}
+
+// ── Shared state for PDF ─────────────────────
+let lastResult = null;
+
+// ── Calculate ────────────────────────────────
+function calculate(){
+  const grade=document.getElementById('matGrade').value;
+  const m=getMat(grade); if(!m){alert('請選擇材料等級');return;}
+  const [,cls,Sfsx,Sfsy,Sfc,Sft,SfbxP,SfbyP,,, Exx,Eyy]=m;
+  const sh=SHEAR_LONG[cls]||[12,10];
+  const Lfsx=sh[0],Lfsy=sh[1];
+  const Lfc=Sfc/2,Lft=Sft/2,LfbxP=SfbxP/2,LfbyP=SfbyP/2;
+
+  const b=+document.getElementById('b').value;
+  const h=+document.getElementById('h').value;
+  const L0=+document.getElementById('L0').value;
+  const Kx=+document.getElementById('Kx').value;
+  const Ky=+document.getElementById('Ky').value;
+  const LbLx=+document.getElementById('LbL0x').value;
+  const LbLy=+document.getElementById('LbL0y').value;
+  const PL=+document.getElementById('PL').value,  M3L=+document.getElementById('M3L').value;
+  const M2L=+document.getElementById('M2L').value, V3L=+document.getElementById('V3L').value;
+  const V2L=+document.getElementById('V2L').value;
+  const PS=+document.getElementById('PS').value,   M3S=+document.getElementById('M3S').value;
+  const M2S=+document.getElementById('M2S').value, V3S=+document.getElementById('V3S').value;
+  const V2S=+document.getElementById('V2S').value;
+
+  // Section
+  const A=b*h, Zex=b*h*h/6, Zey=h*b*b/6;
+  const Ix=b*h*h*h/12, Iy=h*b*b*b/12;
+  const ix=Math.sqrt(Ix/A), iy=Math.sqrt(Iy/A);
+
+  // Buckling length
+  const lkx=Kx*LbLx*L0, lky=Ky*LbLy*L0;
+  const lamX=lkx/ix, lamY=lky/iy, lamMax=Math.max(lamX,lamY);
+  const etaV=etaFn(lamMax);
+  const Lfk=etaV*Lfc, Sfk=etaV*Sfc;
+
+  // Size & Cb
+  const Cfx=cfFn(h), Cfy=cfFn(b);
+  const CbX=cbFn(LbLx*L0, h, b, Eyy, LfbxP);
+  const CbY=cbFn(LbLy*L0, b, h, Exx, LfbyP);
+
+  // Allowable bending
+  const aFb3L=LfbxP*Cfx*CbX, aFb2L=LfbyP*Cfy*CbY;
+  const aFb3S=SfbxP*Cfx*CbX, aFb2S=SfbyP*Cfy*CbY;
+
+  // ─ LONG-TERM ─
+  const isCompL=PL<0;
+  const Fc_L=Math.abs(PL)/A, Ft_L=Math.max(PL,0)/A;
+  const DCRc_L=isCompL?(Lfk>0?Fc_L/Lfk:99):0;
+  const DCRt_L=!isCompL?(Lft>0?Ft_L/Lft:0):0;
+  const Fb3L=Math.abs(M3L)/Zex, Fb2L=Math.abs(M2L)/Zey;
+  const DCRb3L=aFb3L>0?Fb3L/aFb3L:0, DCRb2L=aFb2L>0?Fb2L/aFb2L:0;
+  const DCRax_L=isCompL?DCRc_L:DCRt_L;
+  const DCRPM_L=DCRb3L+DCRb2L+DCRax_L;
+  const fs3L=1.5*Math.abs(V3L)/A, fs2L=1.5*Math.abs(V2L)/A;
+  const DCRs3L=Lfsx>0?fs3L/Lfsx:0, DCRs2L=Lfsy>0?fs2L/Lfsy:0;
+
+  // ─ SHORT-TERM ─
+  const isCompS=PS<0;
+  const Fc_S=Math.abs(PS)/A, Ft_S=Math.max(PS,0)/A;
+  const DCRc_S=isCompS?(Sfk>0?Fc_S/Sfk:99):0;
+  const DCRt_S=!isCompS?(Sft>0?Ft_S/Sft:0):0;
+  const Fb3S=Math.abs(M3S)/Zex, Fb2S=Math.abs(M2S)/Zey;
+  const DCRb3S=aFb3S>0?Fb3S/aFb3S:0, DCRb2S=aFb2S>0?Fb2S/aFb2S:0;
+  const DCRax_S=isCompS?DCRc_S:DCRt_S;
+  const DCRPM_S=DCRb3S+DCRb2S+DCRax_S;
+  const fs3S=1.5*Math.abs(V3S)/A, fs2S=1.5*Math.abs(V2S)/A;
+  const DCRs3S=Sfsx>0?fs3S/Sfsx:0, DCRs2S=Sfsy>0?fs2S/Sfsy:0;
+
+  const maxDCR=Math.max(DCRPM_L,DCRPM_S,DCRs3L,DCRs2L,DCRs3S,DCRs2S);
+
+  // Save for PDF
+  lastResult={grade,b,h,L0,Kx,Ky,LbLx,LbLy,
+    PL,M3L,M2L,V3L,V2L,PS,M3S,M2S,V3S,V2S,
+    Sfc,Sft,SfbxP,SfbyP,Sfsx,Sfsy,Exx,Eyy,cls,
+    Lfc,Lft,LfbxP,LfbyP,Lfsx,Lfsy,Sfk,Lfk,
+    A,Zex,Zey,Ix,Iy,ix,iy,lkx,lky,lamX,lamY,lamMax,etaV,
+    Cfx,Cfy,CbX,CbY,aFb3L,aFb2L,aFb3S,aFb2S,
+    isCompL,isCompS,Fc_L,Ft_L,Fc_S,Ft_S,
+    DCRc_L,DCRt_L,DCRb3L,DCRb2L,DCRax_L,DCRPM_L,DCRs3L,DCRs2L,
+    DCRc_S,DCRt_S,DCRb3S,DCRb2S,DCRax_S,DCRPM_S,DCRs3S,DCRs2S,
+    maxDCR};
+
+  // ── Render results ──
+  const overall=maxDCR<=1
+    ?'<span style="color:#276749;font-size:18px;font-weight:700">&#10003; PASS</span>'
+    :'<span style="color:#e53e3e;font-size:18px;font-weight:700">&#10007; FAIL</span>';
+
+  document.getElementById('resultBody').innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div style="font-size:13px;color:#718096">控制 DCR = <b style="font-size:16px;color:${maxDCR>1?'#e53e3e':'#276749'}">${maxDCR.toFixed(3)}</b></div>
+      ${overall}
+    </div>
+
+    <div class="result-section">
+      <h4>斷面 &amp; 修正係數</h4>
+      <div class="info-grid">
+        ${ibox('A (cm²)',A.toFixed(1))}${ibox('ix / iy',`${ix.toFixed(2)}/${iy.toFixed(2)}`)}
+        ${ibox('λx / λy',`${lamX.toFixed(1)}/${lamY.toFixed(1)}`)}${ibox('η',etaV.toFixed(3))}
+        ${ibox('Cfx / Cfy',`${Cfx.toFixed(3)}/${Cfy.toFixed(3)}`)}${ibox('Cbx / Cby',`${CbX.toFixed(3)}/${CbY.toFixed(3)}`)}
+        ${ibox('Zex (cm³)',Zex.toFixed(1))}${ibox('Zey (cm³)',Zey.toFixed(1))}
+      </div>
+    </div>
+    <div class="sep"></div>
+
+    <div class="result-section">
+      <h4>軸彎複合比（P-M）</h4>
+      ${bar('軸力 '+(isCompL?'壓':'拉'),isCompL?DCRc_L:DCRt_L,'L')}
+      ${bar('撓曲 M3 (x-x)',DCRb3L,'L')}
+      ${bar('撓曲 M2 (y-y)',DCRb2L,'L')}
+      ${bar('P-M 複合 Σ',DCRPM_L,'L')}
+      <div style="height:4px"></div>
+      ${bar('軸力 '+(isCompS?'壓':'拉'),isCompS?DCRc_S:DCRt_S,'S')}
+      ${bar('撓曲 M3 (x-x)',DCRb3S,'S')}
+      ${bar('撓曲 M2 (y-y)',DCRb2S,'S')}
+      ${bar('P-M 複合 Σ',DCRPM_S,'S')}
+    </div>
+    <div class="sep"></div>
+
+    <div class="result-section">
+      <h4>剪應力比</h4>
+      ${bar('剪力 V3 (x-x)',DCRs3L,'L')}${bar('剪力 V2 (y-y)',DCRs2L,'L')}
+      ${bar('剪力 V3 (x-x)',DCRs3S,'S')}${bar('剪力 V2 (y-y)',DCRs2S,'S')}
+    </div>
+    <div class="sep"></div>
+
+    <div class="result-section">
+      <h4>容許應力（kgf/cm²）</h4>
+      <div class="info-grid">
+        ${ibox('Lfk=η·Lfc',Lfk.toFixed(1))}${ibox('Sfk=η·Sfc',Sfk.toFixed(1))}
+        ${ibox('aFb3L',aFb3L.toFixed(1))}${ibox('aFb3S',aFb3S.toFixed(1))}
+        ${ibox('aFb2L',aFb2L.toFixed(1))}${ibox('aFb2S',aFb2S.toFixed(1))}
+        ${ibox('Lfs x/y',`${Lfsx}/${Lfsy}`)}${ibox('Sfs x/y',`${Sfsx}/${Sfsy}`)}
+      </div>
+    </div>`;
+}
+
+function ibox(l,v){return `<div class="info-box"><div class="lbl">${l}</div><div class="val">${v}</div></div>`;}
+function bar(label,dcr,tag){
+  const pct=Math.min(dcr*100,100);
+  const col=dcr>1?'#fc8181':dcr>0.8?'#f6ad55':'#68d391';
+  const st=dcr>1?'ng':'ok';
+  return `<div class="dcr-row">
+    <div class="dcr-label">${label}<span class="tag tag-${tag}">${tag}</span></div>
+    <div class="dcr-bar-wrap"><div class="dcr-bar" style="width:${pct}%;background:${col}"></div></div>
+    <div class="dcr-val" style="color:${dcr>1?'#e53e3e':dcr>0.8?'#c05621':'#276749'}">${dcr.toFixed(3)}</div>
+    <div class="dcr-status ${st}">${dcr>1?'NG':'OK'}</div>
+  </div>`;
+}
+
+// ── PDF Export ───────────────────────────────
+function exportPDF(){
+  if(!lastResult){alert('請先執行設計檢核');return;}
+  const r=lastResult;
+  const now=new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'});
+  const v=(n,d=3)=>typeof n==='number'?n.toFixed(d):n;
+  const stl=(d)=>d>1?'color:#9b2335;font-weight:700':'';
+  const ok=(d)=>`<span style="${stl(d)}">${d.toFixed(3)}</span>`;
+  const judge=(d)=>d<=1?'<b style="color:#276749">OK</b>':'<b style="color:#9b2335">NG</b>';
+
+  const html=`
+  <div class="pr-title">木竹構材設計檢核計算書</div>
+  <div class="pr-sub">單支構材 · 纖維方向容許應力法　　計算日期：${now}</div>
+
+  <div class="pr-section">
+    <h3>一、基本參數</h3>
+    <table class="ptbl">
+      <tr><th colspan="2">材料</th><th colspan="2">斷面</th></tr>
+      <tr><td>材料等級</td><td class="num">${r.grade}</td><td>寬 b</td><td class="num">${r.b} cm</td></tr>
+      <tr><td>E//x-x</td><td class="num">${r.Exx.toLocaleString()} kgf/cm²</td><td>高 h</td><td class="num">${r.h} cm</td></tr>
+      <tr><td>E//y-y</td><td class="num">${r.Eyy.toLocaleString()} kgf/cm²</td><td>斷面積 A</td><td class="num">${v(r.A,1)} cm²</td></tr>
+      <tr><td>Sfc / Lfc</td><td class="num">${r.Sfc} / ${r.Lfc} kgf/cm²</td><td>Zex / Zey</td><td class="num">${v(r.Zex,1)} / ${v(r.Zey,1)} cm³</td></tr>
+      <tr><td>Sft / Lft</td><td class="num">${r.Sft} / ${r.Lft} kgf/cm²</td><td>ix / iy</td><td class="num">${v(r.ix,3)} / ${v(r.iy,3)} cm</td></tr>
+      <tr><td>Sfb-x / Lfb</td><td class="num">${r.SfbxP} / ${r.LfbxP} kgf/cm²</td><td>L₀</td><td class="num">${r.L0} cm</td></tr>
+      <tr><td>Sfb-y / Lfb</td><td class="num">${r.SfbyP} / ${r.LfbyP} kgf/cm²</td><td>Kx / Ky</td><td class="num">${r.Kx} / ${r.Ky}</td></tr>
+      <tr><td>Sfsx / Lfsx</td><td class="num">${r.Sfsx} / ${r.Lfsx} kgf/cm²</td><td>(Lb/L₀)x / y</td><td class="num">${r.LbLx} / ${r.LbLy}</td></tr>
+    </table>
+  </div>
+
+  <div class="pr-section">
+    <h3>二、設計載重</h3>
+    <table class="ptbl">
+      <tr><th>載重項目</th><th>長期（D+L）</th><th>短期（D+L+W/E）</th></tr>
+      <tr><td>軸力 P (kgf)</td><td class="num">${r.PL}</td><td class="num">${r.PS}</td></tr>
+      <tr><td>彎矩 M3 (kgf-cm)</td><td class="num">${r.M3L}</td><td class="num">${r.M3S}</td></tr>
+      <tr><td>彎矩 M2 (kgf-cm)</td><td class="num">${r.M2L}</td><td class="num">${r.M2S}</td></tr>
+      <tr><td>剪力 V3 (kgf)</td><td class="num">${r.V3L}</td><td class="num">${r.V3S}</td></tr>
+      <tr><td>剪力 V2 (kgf)</td><td class="num">${r.V2L}</td><td class="num">${r.V2S}</td></tr>
+    </table>
+  </div>
+
+  <div class="pr-section">
+    <h3>三、細長比 &amp; 修正係數</h3>
+    <table class="ptbl">
+      <tr><th>項目</th><th>公式</th><th>數值</th><th>說明</th></tr>
+      <tr><td>lkx</td><td class="eq">Kx × (Lb/L₀)x × L₀ = ${r.Kx}×${r.LbLx}×${r.L0}</td><td class="num">${v(r.lkx,2)} cm</td><td>x-x 計算長</td></tr>
+      <tr><td>lky</td><td class="eq">Ky × (Lb/L₀)y × L₀ = ${r.Ky}×${r.LbLy}×${r.L0}</td><td class="num">${v(r.lky,2)} cm</td><td>y-y 計算長</td></tr>
+      <tr><td>λx</td><td class="eq">lkx / ix = ${v(r.lkx,2)}/${v(r.ix,3)}</td><td class="num">${v(r.lamX,2)}</td><td></td></tr>
+      <tr><td>λy</td><td class="eq">lky / iy = ${v(r.lky,2)}/${v(r.iy,3)}</td><td class="num">${v(r.lamY,2)}</td><td></td></tr>
+      <tr><td>λ（控制）</td><td class="eq">max(λx, λy)</td><td class="num">${v(r.lamMax,2)}</td><td></td></tr>
+      <tr><td>η</td><td class="eq">${r.lamMax<=30?'λ≤30, η=1.0':r.lamMax<=100?`1.3−0.01×${v(r.lamMax,2)}`:`3000/${v(r.lamMax,2)}²`}</td><td class="num">${v(r.etaV,4)}</td><td>挫屈折減</td></tr>
+      <tr><td>Lfk</td><td class="eq">η × Lfc = ${v(r.etaV,4)}×${r.Lfc}</td><td class="num">${v(r.Lfk,2)} kgf/cm²</td><td>長期挫屈容許壓</td></tr>
+      <tr><td>Sfk</td><td class="eq">η × Sfc = ${v(r.etaV,4)}×${r.Sfc}</td><td class="num">${v(r.Sfk,2)} kgf/cm²</td><td>短期挫屈容許壓</td></tr>
+      <tr><td>Cfx</td><td class="eq">${r.h>=30?`(30/${r.h})^(1/9)`:'h<30, Cf=1.0'}</td><td class="num">${v(r.Cfx,4)}</td><td>尺寸調整(x)</td></tr>
+      <tr><td>Cfy</td><td class="eq">${r.b>=30?`(30/${r.b})^(1/9)`:'b<30, Cf=1.0'}</td><td class="num">${v(r.Cfy,4)}</td><td>尺寸調整(y)</td></tr>
+      <tr><td>Cbx</td><td class="eq">橫向挫屈係數（Cs=${v(Math.sqrt(r.LbLx*r.L0*r.h/(r.b*r.b)),3)}）</td><td class="num">${v(r.CbX,4)}</td><td>強軸橫向挫屈</td></tr>
+      <tr><td>Cby</td><td class="eq">弱軸 Cb = 1.0</td><td class="num">${v(r.CbY,4)}</td><td></td></tr>
+    </table>
+  </div>
+
+  <div class="pr-section">
+    <h3>四、設計檢核結果（DCR ≤ 1.0 為合格）</h3>
+    <table class="ptbl">
+      <tr><th>檢核項目</th><th>公式</th><th>長期 DCR</th><th>判定</th><th>短期 DCR</th><th>判定</th></tr>
+      <tr>
+        <td>軸力（${r.isCompL?'壓':'拉'}）</td>
+        <td class="eq">${r.isCompL?`|P|/A / Lfk = ${v(r.Fc_L,3)}/${v(r.Lfk,2)}`:`P/A / Lft = ${v(r.Ft_L,3)}/${r.Lft}`}</td>
+        <td class="num">${ok(r.isCompL?r.DCRc_L:r.DCRt_L)}</td><td>${judge(r.isCompL?r.DCRc_L:r.DCRt_L)}</td>
+        <td class="num">${ok(r.isCompS?r.DCRc_S:r.DCRt_S)}</td><td>${judge(r.isCompS?r.DCRc_S:r.DCRt_S)}</td>
+      </tr>
+      <tr>
+        <td>撓曲 M3 (x-x)</td>
+        <td class="eq">|M3|/Zex / (Lfb·Cf·Cb) = ${v(r.M3L?Math.abs(r.M3L)/r.Zex:0,3)}/${v(r.aFb3L,2)}</td>
+        <td class="num">${ok(r.DCRb3L)}</td><td>${judge(r.DCRb3L)}</td>
+        <td class="num">${ok(r.DCRb3S)}</td><td>${judge(r.DCRb3S)}</td>
+      </tr>
+      <tr>
+        <td>撓曲 M2 (y-y)</td>
+        <td class="eq">|M2|/Zey / (Lfb·Cf·Cb) = ${v(r.M2L?Math.abs(r.M2L)/r.Zey:0,3)}/${v(r.aFb2L,2)}</td>
+        <td class="num">${ok(r.DCRb2L)}</td><td>${judge(r.DCRb2L)}</td>
+        <td class="num">${ok(r.DCRb2S)}</td><td>${judge(r.DCRb2S)}</td>
+      </tr>
+      <tr style="background:#f0faf4">
+        <td><b>P-M 複合比 Σ</b></td>
+        <td class="eq">DCRb3 + DCRb2 + DCRax</td>
+        <td class="num"><b>${ok(r.DCRPM_L)}</b></td><td>${judge(r.DCRPM_L)}</td>
+        <td class="num"><b>${ok(r.DCRPM_S)}</b></td><td>${judge(r.DCRPM_S)}</td>
+      </tr>
+      <tr>
+        <td>剪力 V3 (x-x)</td>
+        <td class="eq">1.5×|V3|/A / Lfs = ${v(1.5*Math.abs(r.V3L)/r.A,3)}/${r.Lfsx}</td>
+        <td class="num">${ok(r.DCRs3L)}</td><td>${judge(r.DCRs3L)}</td>
+        <td class="num">${ok(r.DCRs3S)}</td><td>${judge(r.DCRs3S)}</td>
+      </tr>
+      <tr>
+        <td>剪力 V2 (y-y)</td>
+        <td class="eq">1.5×|V2|/A / Lfs = ${v(1.5*Math.abs(r.V2L)/r.A,3)}/${r.Lfsy}</td>
+        <td class="num">${ok(r.DCRs2L)}</td><td>${judge(r.DCRs2L)}</td>
+        <td class="num">${ok(r.DCRs2S)}</td><td>${judge(r.DCRs2S)}</td>
+      </tr>
+    </table>
+
+    <div class="pr-verdict ${r.maxDCR<=1?'ok':'ng'}">
+      控制 DCR = ${v(r.maxDCR,3)}　　${r.maxDCR<=1?'✓ 檢核通過（PASS）':'✗ 檢核未通過（FAIL）'}
+    </div>
+  </div>`;
+
+  document.getElementById('printArea').innerHTML=html;
+  window.print();
+}
+</script>
+</body>
+</html>
