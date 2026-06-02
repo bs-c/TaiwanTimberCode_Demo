@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>木構材設計檢核 — 單支構材</title>
     <style>
-      /* ── reset ── */
       * {
         box-sizing: border-box;
         margin: 0;
@@ -17,8 +16,6 @@
         color: #2d3748;
         font-size: 14px;
       }
-
-      /* ── header ── */
       h1 {
         background: linear-gradient(135deg, #2d6a4f, #52b788);
         color: #fff;
@@ -45,16 +42,12 @@
         font-size: 12px;
         font-weight: 700;
         cursor: pointer;
-        letter-spacing: 0.5px;
       }
       .btn-pdf:hover {
         background: #e6f4ed;
       }
-
-      /* ── tabs ── */
       .tabs {
         display: flex;
-        gap: 0;
         background: #fff;
         border-bottom: 2px solid #e2e8f0;
         padding: 0 16px;
@@ -72,10 +65,8 @@
         color: #2d6a4f;
         border-bottom-color: #2d6a4f;
       }
-
-      /* ── container ── */
       .container {
-        max-width: 1120px;
+        max-width: 1140px;
         margin: 0 auto;
         padding: 16px;
       }
@@ -84,8 +75,6 @@
         grid-template-columns: 1fr 1fr;
         gap: 16px;
       }
-
-      /* ── card ── */
       .card {
         background: #fff;
         border-radius: 8px;
@@ -101,11 +90,13 @@
         padding-bottom: 6px;
         border-bottom: 2px solid #b7e4c7;
       }
+      .card-fire h3 {
+        color: #c05621;
+        border-bottom-color: #fbd38d;
+      }
       .card-last {
         margin-bottom: 0;
       }
-
-      /* ── form ── */
       .field {
         margin-bottom: 10px;
       }
@@ -156,8 +147,6 @@
       .btn-calc:hover {
         opacity: 0.9;
       }
-
-      /* ── result ── */
       .result-section {
         margin-bottom: 12px;
       }
@@ -168,6 +157,9 @@
         margin-bottom: 6px;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+      }
+      .result-section.fire-sec h4 {
+        color: #c05621;
       }
       .dcr-row {
         display: flex;
@@ -217,6 +209,11 @@
         background: #fed7d7;
         color: #9b2335;
       }
+      .na {
+        background: #edf2f7;
+        color: #a0aec0;
+        font-style: italic;
+      }
       .info-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -239,9 +236,18 @@
         color: #2d3748;
         font-size: 12px;
       }
+      .info-box.fire-box {
+        background: #fffaf0;
+        border-color: #fbd38d;
+      }
       .sep {
         height: 1px;
         background: #e2e8f0;
+        margin: 10px 0;
+      }
+      .sep-fire {
+        height: 1px;
+        background: #fbd38d;
         margin: 10px 0;
       }
       .alert {
@@ -252,6 +258,11 @@
         background: #fffbeb;
         border-left: 3px solid #d69e2e;
         color: #744210;
+      }
+      .alert-fire {
+        background: #fff5f0;
+        border-left: 3px solid #ed8936;
+        color: #7b341e;
       }
       .tag {
         display: inline-block;
@@ -270,8 +281,27 @@
         background: #fed7d7;
         color: #9b2335;
       }
-
-      /* ── formula section ── */
+      .tag-F {
+        background: #feebc8;
+        color: #c05621;
+      }
+      .fire-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+        cursor: pointer;
+      }
+      .fire-toggle input {
+        width: auto;
+        margin: 0;
+      }
+      .fire-toggle span {
+        font-size: 13px;
+        font-weight: 600;
+        color: #c05621;
+      }
+      /* formula section */
       .formula-section {
         margin-bottom: 20px;
       }
@@ -284,6 +314,11 @@
         background: #f0faf4;
         border-left: 4px solid #52b788;
         border-radius: 0 4px 4px 0;
+      }
+      .formula-section.fire-f h3 {
+        color: #c05621;
+        background: #fffaf0;
+        border-left-color: #ed8936;
       }
       .formula-grid {
         display: grid;
@@ -306,7 +341,7 @@
       .feq {
         background: #f7fafc;
         border-radius: 4px;
-        padding: 6px 10px;
+        padding: 5px 10px;
         font-family: "Courier New", monospace;
         font-size: 12px;
         color: #2d3748;
@@ -339,13 +374,9 @@
         padding: 5px 8px;
         border: 1px solid #e2e8f0;
       }
-
-      /* ── print area (hidden on screen) ── */
       #printArea {
         display: none;
       }
-
-      /* ── responsive ── */
       @media (max-width: 700px) {
         .grid2,
         .formula-grid {
@@ -358,8 +389,7 @@
           width: 150px;
         }
       }
-
-      /* ══════════════ PRINT CSS ══════════════ */
+      /* ── PRINT ── */
       @media print {
         * {
           -webkit-print-color-adjust: exact !important;
@@ -367,32 +397,16 @@
         }
         body {
           background: #fff;
-          font-size: 11pt;
+          font-size: 10pt;
         }
+        h1,
         .tabs,
-        .tab-content:not(#tc-report),
-        header > .btn-pdf {
+        .tab-content:not(#tc-report) {
           display: none !important;
         }
         #printArea {
           display: block !important;
         }
-        .no-print {
-          display: none !important;
-        }
-        .print-page {
-          page-break-after: always;
-        }
-        h1 {
-          background: none !important;
-          color: #2d6a4f !important;
-          border-bottom: 2px solid #2d6a4f;
-          padding: 8px 0;
-        }
-        .btn-pdf {
-          display: none;
-        }
-
         .pr-title {
           font-size: 16pt;
           font-weight: 700;
@@ -402,10 +416,11 @@
         .pr-sub {
           font-size: 10pt;
           color: #718096;
-          margin-bottom: 20px;
+          margin-bottom: 16px;
         }
         .pr-section {
           margin-bottom: 14px;
+          page-break-inside: avoid;
         }
         .pr-section h3 {
           font-size: 11pt;
@@ -415,22 +430,32 @@
           padding-bottom: 3px;
           margin-bottom: 8px;
         }
+        .pr-section.fire-pr h3 {
+          color: #c05621;
+          border-bottom-color: #fbd38d;
+        }
         table.ptbl {
           width: 100%;
           border-collapse: collapse;
-          font-size: 10pt;
-          margin-bottom: 8px;
+          font-size: 9.5pt;
         }
         table.ptbl th {
           background: #e6f4ed;
-          padding: 4px 8px;
+          padding: 4px 6px;
           text-align: left;
           border: 1px solid #b7e4c7;
           font-weight: 700;
         }
+        table.ptbl.fire-tbl th {
+          background: #fef3e2;
+          border-color: #fbd38d;
+        }
         table.ptbl td {
-          padding: 4px 8px;
+          padding: 4px 6px;
           border: 1px solid #d1e7dd;
+        }
+        table.ptbl.fire-tbl td {
+          border-color: #fbd38d;
         }
         table.ptbl td.num {
           text-align: right;
@@ -438,36 +463,17 @@
         }
         table.ptbl td.eq {
           font-family: "Courier New", monospace;
-          font-size: 9pt;
+          font-size: 8.5pt;
           color: #4a5568;
         }
-        .pr-ok {
-          color: #276749;
-          font-weight: 700;
-        }
-        .pr-ng {
-          color: #9b2335;
-          font-weight: 700;
-        }
-        .pr-row {
-          display: flex;
-          justify-content: space-between;
-          padding: 3px 0;
-          border-bottom: 1px dotted #e2e8f0;
-          font-size: 10pt;
-        }
-        .pr-row .pr-val {
-          font-family: "Courier New", monospace;
-          font-weight: 700;
-        }
         .pr-verdict {
-          font-size: 14pt;
+          font-size: 13pt;
           font-weight: 700;
           text-align: center;
-          padding: 10px;
+          padding: 8px;
           border: 2px solid;
           border-radius: 4px;
-          margin-top: 12px;
+          margin-top: 10px;
         }
         .pr-verdict.ok {
           color: #276749;
@@ -498,12 +504,13 @@
       <div class="tab" onclick="showTab('formula')">&#128218; 公式說明</div>
     </div>
 
-    <!-- ══ TAB: 輸入 + 結果 ══ -->
+    <!-- ══ TAB: 輸入 ══ -->
     <div id="tc-input" class="tab-content">
       <div class="container">
         <div class="grid2">
-          <!-- LEFT -->
+          <!-- LEFT: inputs -->
           <div>
+            <!-- 材料 -->
             <div class="card">
               <h3>&#9654; 材料性質</h3>
               <div class="field">
@@ -511,8 +518,139 @@
                 <select id="matGrade" onchange="onMaterialChange()"></select>
               </div>
               <div class="info-grid" id="matInfo" style="display: none"></div>
+
+              <!-- 自訂材料輸入 -->
+              <div id="customMatWrap" style="display: none; margin-top: 8px">
+                <div class="alert" style="font-size: 11px; margin-bottom: 8px">
+                  輸入短期容許應力；長期值自動設為短期 ÷ 2
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label>自訂名稱（選填）</label>
+                    <input
+                      type="text"
+                      id="cust_name"
+                      placeholder="例：自訂木材-A"
+                      oninput="updateCustomMatInfo()"
+                    />
+                  </div>
+                  <div class="field">
+                    <label>樹種分類（查剪力表）</label>
+                    <select id="cust_cls" onchange="updateCustomMatInfo()">
+                      <option value="1">1 類</option>
+                      <option value="2">2 類</option>
+                      <option value="3" selected>3 類（花旗松）</option>
+                      <option value="4">4 類</option>
+                      <option value="5">5 類</option>
+                      <option value="6">6 類</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label>E//x-x (kgf/cm²)</label
+                    ><input
+                      type="number"
+                      id="cust_Exx"
+                      value="120000"
+                      step="1000"
+                      min="1"
+                      oninput="updateCustomMatInfo()"
+                    />
+                  </div>
+                  <div class="field">
+                    <label>E//y-y (kgf/cm²)</label
+                    ><input
+                      type="number"
+                      id="cust_Eyy"
+                      value="110000"
+                      step="1000"
+                      min="1"
+                      oninput="updateCustomMatInfo()"
+                    />
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label>Sfc 短期容許壓應力</label
+                    ><input
+                      type="number"
+                      id="cust_Sfc"
+                      value="170"
+                      step="1"
+                      min="1"
+                      oninput="updateCustomMatInfo()"
+                    />
+                  </div>
+                  <div class="field">
+                    <label>Sft 短期容許拉應力</label
+                    ><input
+                      type="number"
+                      id="cust_Sft"
+                      value="150"
+                      step="1"
+                      min="1"
+                      oninput="updateCustomMatInfo()"
+                    />
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label>Sfbx+ 短期撓曲 x-x</label
+                    ><input
+                      type="number"
+                      id="cust_SfbxP"
+                      value="220"
+                      step="1"
+                      min="1"
+                      oninput="updateCustomMatInfo()"
+                    />
+                  </div>
+                  <div class="field">
+                    <label>Sfby+ 短期撓曲 y-y</label
+                    ><input
+                      type="number"
+                      id="cust_SfbyP"
+                      value="160"
+                      step="1"
+                      min="1"
+                      oninput="updateCustomMatInfo()"
+                    />
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label>Sfsx 短期剪力 x-x</label
+                    ><input
+                      type="number"
+                      id="cust_Sfsx"
+                      value="24"
+                      step="1"
+                      min="1"
+                      oninput="updateCustomMatInfo()"
+                    />
+                  </div>
+                  <div class="field">
+                    <label>Sfsy 短期剪力 y-y</label
+                    ><input
+                      type="number"
+                      id="cust_Sfsy"
+                      value="20"
+                      step="1"
+                      min="1"
+                      oninput="updateCustomMatInfo()"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="info-grid"
+                  id="customMatInfo"
+                  style="display: grid; margin-top: 6px"
+                ></div>
+              </div>
             </div>
 
+            <!-- 斷面 -->
             <div class="card">
               <h3>&#9654; 斷面參數（矩形）</h3>
               <div class="field-row">
@@ -542,6 +680,71 @@
               <div class="info-grid" id="secInfo" style="display: none"></div>
             </div>
 
+            <!-- 防火設定 -->
+            <div class="card card-fire">
+              <h3>&#128293; 防火設定</h3>
+              <label class="fire-toggle">
+                <input type="checkbox" id="chkFire" onchange="toggleFire()" />
+                <span>進行防火構材檢核</span>
+              </label>
+              <div id="fireInputs" style="display: none">
+                <div class="alert alert-fire">
+                  防火檢核使用折減後斷面（炭化後）搭配短期容許應力進行檢核
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label>防火時效（分鐘）</label>
+                    <select id="fireDuration" onchange="calcCharring()">
+                      <option value="30">30 分鐘</option>
+                      <option value="60">60 分鐘</option>
+                      <option value="90">90 分鐘</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>受火情形</label>
+                    <select id="fireExposure">
+                      <option value="3B">三面受火（底部＋兩側）</option>
+                      <option value="4">四面受火（全周）</option>
+                      <option value="2S">二面受火（兩側面）</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label
+                      >側邊炭化深度 a<sub>s</sub> (cm)
+                      <span style="color: #718096; font-size: 11px"
+                        >（可手動修改）</span
+                      ></label
+                    >
+                    <input
+                      type="number"
+                      id="aS"
+                      step="0.01"
+                      min="0"
+                      placeholder="自動計算"
+                    />
+                  </div>
+                  <div class="field">
+                    <label>底部炭化深度 a<sub>b</sub> (cm)</label>
+                    <input
+                      type="number"
+                      id="aB"
+                      step="0.01"
+                      min="0"
+                      placeholder="自動計算"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="info-grid"
+                  id="fireSecInfo"
+                  style="display: none"
+                ></div>
+              </div>
+            </div>
+
+            <!-- 計算長度 -->
             <div class="card">
               <h3>&#9654; 計算長度</h3>
               <div class="field">
@@ -596,6 +799,7 @@
               </div>
             </div>
 
+            <!-- 設計載重 -->
             <div class="card card-last">
               <h3>&#9654; 設計載重（kgf, kgf-cm）</h3>
               <div class="alert">壓力 P 輸入負值，拉力輸入正值</div>
@@ -611,25 +815,25 @@
               </div>
               <div class="field-row3">
                 <div class="field">
-                  <label>P<sub>L</sub> (kgf)</label
+                  <label>P<sub>L</sub></label
                   ><input type="number" id="PL" value="-5000" step="100" />
                 </div>
                 <div class="field">
-                  <label>M3<sub>L</sub> (kgf-cm)</label
+                  <label>M3<sub>L</sub></label
                   ><input type="number" id="M3L" value="10000" step="100" />
                 </div>
                 <div class="field">
-                  <label>M2<sub>L</sub> (kgf-cm)</label
+                  <label>M2<sub>L</sub></label
                   ><input type="number" id="M2L" value="2000" step="100" />
                 </div>
               </div>
               <div class="field-row">
                 <div class="field">
-                  <label>V3<sub>L</sub> (kgf)</label
+                  <label>V3<sub>L</sub></label
                   ><input type="number" id="V3L" value="200" step="10" />
                 </div>
                 <div class="field">
-                  <label>V2<sub>L</sub> (kgf)</label
+                  <label>V2<sub>L</sub></label
                   ><input type="number" id="V2L" value="50" step="10" />
                 </div>
               </div>
@@ -642,30 +846,70 @@
                   margin-bottom: 6px;
                 "
               >
-                &#9632; 短期載重（D+L+W / E）
+                &#9632; 短期載重（D+L+W/E）
               </div>
               <div class="field-row3">
                 <div class="field">
-                  <label>P<sub>S</sub> (kgf)</label
+                  <label>P<sub>S</sub></label
                   ><input type="number" id="PS" value="-8000" step="100" />
                 </div>
                 <div class="field">
-                  <label>M3<sub>S</sub> (kgf-cm)</label
+                  <label>M3<sub>S</sub></label
                   ><input type="number" id="M3S" value="25000" step="100" />
                 </div>
                 <div class="field">
-                  <label>M2<sub>S</sub> (kgf-cm)</label
+                  <label>M2<sub>S</sub></label
                   ><input type="number" id="M2S" value="5000" step="100" />
                 </div>
               </div>
               <div class="field-row">
                 <div class="field">
-                  <label>V3<sub>S</sub> (kgf)</label
+                  <label>V3<sub>S</sub></label
                   ><input type="number" id="V3S" value="500" step="10" />
                 </div>
                 <div class="field">
-                  <label>V2<sub>S</sub> (kgf)</label
+                  <label>V2<sub>S</sub></label
                   ><input type="number" id="V2S" value="120" step="10" />
+                </div>
+              </div>
+              <div class="sep"></div>
+              <div id="fireForcesWrap" style="display: none">
+                <div
+                  style="
+                    font-size: 12px;
+                    color: #c05621;
+                    font-weight: 700;
+                    margin-bottom: 6px;
+                  "
+                >
+                  &#9632; 防火載重（火災時設計力）
+                </div>
+                <div class="alert alert-fire" style="font-size: 11px">
+                  若無另行輸入，防火檢核預設使用長期載重值
+                </div>
+                <div class="field-row3">
+                  <div class="field">
+                    <label>P<sub>F</sub></label
+                    ><input type="number" id="PF" value="-5000" step="100" />
+                  </div>
+                  <div class="field">
+                    <label>M3<sub>F</sub></label
+                    ><input type="number" id="M3F" value="10000" step="100" />
+                  </div>
+                  <div class="field">
+                    <label>M2<sub>F</sub></label
+                    ><input type="number" id="M2F" value="2000" step="100" />
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label>V3<sub>F</sub></label
+                    ><input type="number" id="V3F" value="200" step="10" />
+                  </div>
+                  <div class="field">
+                    <label>V2<sub>F</sub></label
+                    ><input type="number" id="V2F" value="50" step="10" />
+                  </div>
                 </div>
               </div>
               <button class="btn-calc" onclick="calculate()">
@@ -676,7 +920,15 @@
 
           <!-- RIGHT: results -->
           <div>
-            <div class="card" style="position: sticky; top: 12px">
+            <div
+              class="card"
+              style="
+                position: sticky;
+                top: 12px;
+                max-height: 92vh;
+                overflow-y: auto;
+              "
+            >
               <h3>&#9654; 檢核結果</h3>
               <div
                 id="resultBody"
@@ -692,55 +944,43 @@
             </div>
           </div>
         </div>
-        <!-- /grid2 -->
       </div>
-      <!-- /container -->
     </div>
-    <!-- /tc-input -->
 
     <!-- ══ TAB: 公式說明 ══ -->
     <div id="tc-formula" class="tab-content" style="display: none">
       <div class="container">
         <div class="formula-section">
-          <h3>一、斷面幾何性質（矩形斷面，寬 b × 高 h）</h3>
+          <h3>一、斷面幾何性質（矩形，寬 b × 高 h）</h3>
           <div class="formula-grid">
             <div class="fbox">
               <h4>斷面積 &amp; 慣性矩</h4>
               <div class="feq">A = b × h　　(cm²)</div>
-              <div class="feq">Ix = b·h³ / 12　(cm⁴，強軸 x-x)</div>
-              <div class="feq">Iy = h·b³ / 12　(cm⁴，弱軸 y-y)</div>
-              <div class="fnote">
-                迴轉半徑：ix = √(Ix/A) = h/√12，iy = b/√12
-              </div>
+              <div class="feq">Ix = b·h³/12，Iy = h·b³/12　(cm⁴)</div>
+              <div class="feq">ix = h/√12，iy = b/√12　(cm)</div>
             </div>
             <div class="fbox">
               <h4>彈性斷面模數</h4>
-              <div class="feq">Zex = b·h² / 6　(cm³，x-x 軸)</div>
-              <div class="feq">Zey = h·b² / 6　(cm³，y-y 軸)</div>
-              <div class="fnote">設計撓曲應力：Fb = |M| / Ze</div>
+              <div class="feq">Zex = b·h²/6　(cm³，強軸 x-x)</div>
+              <div class="feq">Zey = h·b²/6　(cm³，弱軸 y-y)</div>
             </div>
           </div>
         </div>
 
         <div class="formula-section">
-          <h3>二、長期容許應力（短期容許應力之 1/2）</h3>
+          <h3>二、長期容許應力 = 短期容許應力 ÷ 2</h3>
           <div class="fbox" style="margin-bottom: 10px">
-            <div class="feq">Lfc = Sfc / 2　　（長期壓應力）</div>
-            <div class="feq">Lft = Sft / 2　　（長期拉應力）</div>
-            <div class="feq">Lfb = Sfb / 2　　（長期撓曲應力）</div>
-            <div class="feq">Lfs ← 依樹種分類查表（另列）</div>
-            <div class="fnote">
-              Sfc, Sft, Sfb 依材料等級查「材料性質」表；Lfs 依樹種分類查剪力表。
-            </div>
+            <div class="feq">Lfc = Sfc/2，Lft = Sft/2，Lfb = Sfb/2</div>
+            <div class="feq">Lfs ← 依樹種分類查剪力表</div>
           </div>
           <table class="ftbl">
             <thead>
               <tr>
                 <th>樹種分類</th>
-                <th>長期 Lfsx (kgf/cm²)</th>
-                <th>長期 Lfsy (kgf/cm²)</th>
-                <th>短期 Sfsx</th>
-                <th>短期 Sfsy</th>
+                <th>Lfsx</th>
+                <th>Lfsy</th>
+                <th>Sfsx</th>
+                <th>Sfsy</th>
               </tr>
             </thead>
             <tbody>
@@ -791,152 +1031,115 @@
         </div>
 
         <div class="formula-section">
-          <h3>三、挫屈細長比 λ</h3>
+          <h3>三、挫屈細長比 &amp; 折減係數</h3>
           <div class="formula-grid">
             <div class="fbox">
-              <h4>有效計算長度</h4>
+              <h4>計算長度 &amp; 細長比</h4>
               <div class="feq">lkx = Kx × (Lb/L₀)x × L₀</div>
               <div class="feq">lky = Ky × (Lb/L₀)y × L₀</div>
-              <div class="fnote">
-                Kx,
-                Ky：有效長度比（兩端固接=0.5；一端固一端鉸=0.7；兩端鉸=1.0；懸臂=2.0）
-              </div>
+              <div class="feq">λx = lkx/ix，λy = lky/iy</div>
+              <div class="feq">λ = max(λx, λy)</div>
             </div>
             <div class="fbox">
-              <h4>細長比</h4>
-              <div class="feq">λx = lkx / ix</div>
-              <div class="feq">λy = lky / iy</div>
-              <div class="feq">λ = max(λx, λy)　（取控制值）</div>
+              <h4>挫屈折減係數 η</h4>
+              <div class="feq">λ ≤ 30　　→　η = 1.000</div>
+              <div class="feq">30 &lt; λ ≤ 100　→　η = 1.3 − 0.01λ</div>
+              <div class="feq">λ &gt; 100　→　η = 3000/λ²</div>
+              <div class="fnote">Lfk = η·Lfc，Sfk = η·Sfc</div>
             </div>
           </div>
         </div>
 
         <div class="formula-section">
-          <h3>四、挫屈折減係數 η</h3>
-          <div class="fbox">
-            <div class="feq">
-              λ ≤ 30　　　→　η = 1.000<span class="cond"
-                >（短柱，無挫屈折減）</span
-              >
-            </div>
-            <div class="feq">30 &lt; λ ≤ 100　→　η = 1.3 − 0.01·λ</div>
-            <div class="feq">λ &gt; 100　　→　η = 3000 / λ²</div>
-            <div class="fnote">
-              長期容許挫屈壓應力 Lfk = η·Lfc；短期 Sfk = η·Sfc
-            </div>
-          </div>
-        </div>
-
-        <div class="formula-section">
-          <h3>五、尺寸調整係數 Cf（撓曲）</h3>
-          <div class="fbox">
-            <div class="feq">h ≥ 30 cm　→　Cf = (30/h)<sup>1/9</sup></div>
-            <div class="feq">h &lt; 30 cm　→　Cf = 1.0</div>
-            <div class="fnote">
-              x-x 向以 h（斷面深度）代入；y-y 向以 b（斷面寬度）代入。<br />尺寸因子對大斷面有折減效果（h=30
-              時 Cf=1.0；h=45 時 Cf≈0.96）。
-            </div>
-          </div>
-        </div>
-
-        <div class="formula-section">
-          <h3>六、橫向挫屈調整係數 Cb（強軸撓曲）</h3>
+          <h3>四、撓曲修正係數</h3>
           <div class="formula-grid">
             <div class="fbox">
-              <h4>計算參數</h4>
-              <div class="feq">Ck = 0.8 × √(E//y-y / Lfb-xx)</div>
+              <h4>尺寸調整係數 Cf</h4>
+              <div class="feq">h ≥ 30 cm　→　Cf = (30/h)^(1/9)</div>
+              <div class="feq">h &lt; 30 cm　→　Cf = 1.0</div>
+              <div class="fnote">x-x 向用 h，y-y 向用 b</div>
+            </div>
+            <div class="fbox">
+              <h4>橫向挫屈係數 Cb（強軸）</h4>
+              <div class="feq">Ck = 0.8√(E//y-y / Lfb-xx)</div>
               <div class="feq">Cs = √(le·h / b²)</div>
-              <div class="fnote">
-                le = (Lb/L₀)x × L₀（強軸有效撓曲長度）<br />E//y-y：y-y
-                向彈性模數；Lfb-xx：強軸長期容許撓曲應力
-              </div>
-            </div>
-            <div class="fbox">
-              <h4>Cb 判斷</h4>
-              <div class="feq">Cs ≤ 10　　→　Cb = 1.000</div>
               <div class="feq">
-                10 &lt; Cs &lt; Ck　→　Cb = 1 − (Cs/Ck)^(4/3)
+                Cs≤10 → Cb=1 ； Cs&lt;Ck → Cb=1−(Cs/Ck)^(4/3)
               </div>
-              <div class="feq">
-                Cs ≥ Ck　　→　Cb = 0.4·E//y-y / (Cs²·Lfb-xx)
-              </div>
-              <div class="fnote">
-                弱軸撓曲通常不發生橫向挫屈，取 Cb-yy = 1.0
-              </div>
+              <div class="feq">Cs≥Ck → Cb=0.4·E//y-y/(Cs²·Lfb-xx)</div>
             </div>
           </div>
         </div>
 
         <div class="formula-section">
-          <h3>七、軸力應力比 DCRc / DCRt</h3>
+          <h3>五、P-M 軸彎複合應力比</h3>
+          <div class="fbox">
+            <div class="feq">DCRc = |P|/A / (η·fc)　（受壓）</div>
+            <div class="feq">DCRt = P/A / ft　　　　（受拉）</div>
+            <div class="feq">DCRb3 = |M3|/Zex / (fb·Cfx·Cbx)</div>
+            <div class="feq">DCRb2 = |M2|/Zey / (fb·Cfy·Cby)</div>
+            <div class="feq">DCRP-M = DCRb3 + DCRb2 + DCRc（或 DCRt）≤ 1.0</div>
+          </div>
+        </div>
+
+        <div class="formula-section">
+          <h3>六、剪應力比</h3>
+          <div class="fbox">
+            <div class="feq">α = 1.5（矩形斷面剪應力分布係數）</div>
+            <div class="feq">
+              DCRs3 = α·|V3|/A / fs-x　；　DCRs2 = α·|V2|/A / fs-y　≤ 1.0
+            </div>
+          </div>
+        </div>
+
+        <div class="formula-section fire-f">
+          <h3>&#128293; 七、防火炭化折減斷面（新增）</h3>
           <div class="formula-grid">
             <div class="fbox">
-              <h4>受壓（P &lt; 0）</h4>
-              <div class="feq">設計壓應力：Fc = |P| / A</div>
-              <div class="feq">長期：DCRc,L = Fc / (η·Lfc) = Fc / Lfk</div>
-              <div class="feq">短期：DCRc,S = Fc / (η·Sfc) = Fc / Sfk</div>
+              <h4>炭化深度計算</h4>
+              <div class="feq">a_s = 炭化速率_側 × t（min）</div>
+              <div class="feq">a_b = 炭化速率_底 × t（min）</div>
+              <div class="fnote">
+                木材（花旗松等）：側 0.064 cm/min，底 0.0693 cm/min<br />
+
+                30 min → 側 1.92 cm，底 2.08 cm（花旗松）
+              </div>
             </div>
             <div class="fbox">
-              <h4>受拉（P ≥ 0）</h4>
-              <div class="feq">設計拉應力：Ft = P / A</div>
-              <div class="feq">長期：DCRt,L = Ft / Lft</div>
-              <div class="feq">短期：DCRt,S = Ft / Sft</div>
+              <h4>受火情形 → 折減斷面</h4>
+              <div class="feq">三面（底＋兩側）：b_r = b−2a_s，h_r = h−a_b</div>
+              <div class="feq">
+                四面（全周）：　　b_r = b−2a_s，h_r = h−2a_s
+              </div>
+              <div class="feq">二面（兩側）：　　b_r = b−2a_s，h_r = h</div>
+              <div class="fnote">
+                b_r、h_r 須 &gt; 0；以折減斷面重算 A_r、Ze_r、i_r
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="formula-section">
-          <h3>八、撓曲應力比 DCRb</h3>
           <div class="fbox">
-            <div class="feq">設計撓曲應力：Fb3 = |M3| / Zex　（x-x 強軸）</div>
-            <div class="feq">　　　　　　　Fb2 = |M2| / Zey　（y-y 弱軸）</div>
-            <div class="feq">長期：DCRb3,L = Fb3 / (Lfb-xx · Cfx · Cbx)</div>
-            <div class="feq">　　　DCRb2,L = Fb2 / (Lfb-yy · Cfy · Cby)</div>
-            <div class="feq">短期：DCRb3,S = Fb3 / (Sfb-xx · Cfx · Cbx)</div>
-            <div class="feq">　　　DCRb2,S = Fb2 / (Sfb-yy · Cfy · Cby)</div>
-          </div>
-        </div>
-
-        <div class="formula-section">
-          <h3>九、P-M 複合應力比（軸彎交互作用）</h3>
-          <div class="fbox">
+            <h4>防火 DCR 計算</h4>
+            <div class="feq">以折減斷面（b_r × h_r）計算所有幾何量</div>
             <div class="feq">
-              長期：DCRP-M,L = DCRb3,L + DCRb2,L + DCRc,L （或 DCRt,L）
+              容許應力採用「短期容許應力」（火災屬短期緊急狀態）
             </div>
             <div class="feq">
-              短期：DCRP-M,S = DCRb3,S + DCRb2,S + DCRc,S （或 DCRt,S）
+              DCR_F-PM = DCRb3,F + DCRb2,F + DCRc,F（或 DCRt,F）
             </div>
+            <div class="feq">DCR_F-V3 = α·|V3_F|/A_r / Sfsx　≤ 1.0</div>
             <div class="fnote">
-              &#9654; 檢核條件：DCRP-M ≤ 1.0（超過表示不足）
+              防火設計力（P_F, M3_F, ...）通常取長期載重，因火災時風力不重疊
             </div>
-          </div>
-        </div>
-
-        <div class="formula-section">
-          <h3>十、剪應力比 DCRs</h3>
-          <div class="fbox">
-            <div class="feq">剪應力斷面因子 α = 1.5（矩形斷面）</div>
-            <div class="feq">設計剪應力：Fs3 = V3 / A，Fs2 = V2 / A</div>
-            <div class="feq">
-              長期：DCRs3,L = α·Fs3 / Lfsx　；　DCRs2,L = α·Fs2 / Lfsy
-            </div>
-            <div class="feq">
-              短期：DCRs3,S = α·Fs3 / Sfsx　；　DCRs2,S = α·Fs2 / Sfsy
-            </div>
-            <div class="fnote">&#9654; 檢核條件：DCRs ≤ 1.0</div>
           </div>
         </div>
       </div>
-      <!-- /container -->
     </div>
-    <!-- /tc-formula -->
 
     <!-- ══ PRINT AREA ══ -->
     <div id="printArea"></div>
 
-    <!-- ═══════ SCRIPT ═══════ -->
     <script>
-      // ── Tab control ──────────────────────────────
+      // ── Tab control ──
       function showTab(id) {
         document
           .querySelectorAll(".tab-content")
@@ -949,7 +1152,7 @@
         document.querySelectorAll(".tab")[idx[id]].classList.add("active");
       }
 
-      // ── Material DB ──────────────────────────────
+      // ── Material DB ──
       // [grade, speciesClass, Sfsx, Sfsy, Sfc, Sft, SfbxP, SfbyP, SfbxN, SfbyN, Exx, Eyy]
       const MAT_DB = [
         ["E170", 3, 24, 20, 250, 220, 330, 236, 330, 236, 170000, 155000],
@@ -1000,9 +1203,22 @@
         ["E85F255", 3, 24, 20, 150, 140, 170, 170, 170, 170, 85000, 85000],
         ["E75F240", 3, 24, 20, 130, 130, 160, 160, 160, 160, 75000, 75000],
         ["E65F225", 3, 24, 20, 120, 120, 150, 150, 150, 150, 65000, 65000],
+        [
+          "Bamboo-Guei",
+          1,
+          77.6,
+          77.6,
+          638.7,
+          1283.5,
+          311,
+          311,
+          311,
+          311,
+          59857,
+          59857,
+        ],
         ["E120-F330", 3, 24, 20, 180, 170, 220, 220, 220, 220, 120000, 120000],
       ];
-
       const SHEAR_LONG = {
         1: [16, 14],
         2: [14, 12],
@@ -1012,14 +1228,39 @@
         6: [10, 7],
       };
 
+      // Charring rates [side cm/min, bottom cm/min]
+      const CHAR_RATE_WOOD = [0.064, 0.0693]; // 花旗松等 softwood (30min→1.92/2.08 cm)
+      const CHAR_RATE_BAMBOO = [0.05, 0.05]; // Bamboo
+
+      function getCharRate(grade) {
+        if (grade === "__custom__") {
+          const name = (document.getElementById("cust_name") || {}).value || "";
+          return name.toLowerCase().includes("bamboo")
+            ? CHAR_RATE_BAMBOO
+            : CHAR_RATE_WOOD;
+        }
+        return grade.startsWith("Bamboo") ? CHAR_RATE_BAMBOO : CHAR_RATE_WOOD;
+      }
+
       (function init() {
         const sel = document.getElementById("matGrade");
+        // Custom option first
+        const oC = document.createElement("option");
+        oC.value = "__custom__";
+        oC.textContent = "★ 自訂材料（手動輸入）";
+        sel.appendChild(oC);
+        const oSep = document.createElement("option");
+        oSep.disabled = true;
+        oSep.textContent = "────────────────";
+        sel.appendChild(oSep);
         MAT_DB.forEach((m) => {
           const o = document.createElement("option");
           o.value = m[0];
           o.textContent = m[0];
           sel.appendChild(o);
         });
+        // Default to first real material
+        sel.value = MAT_DB[0][0];
         onMaterialChange();
       })();
 
@@ -1028,27 +1269,81 @@
       }
 
       function onMaterialChange() {
-        const m = getMat(document.getElementById("matGrade").value);
-        if (!m) return;
-        const [, cls, Sfsx, Sfsy, Sfc, Sft, SfbxP, SfbyP, , , Exx, Eyy] = m;
-        const sh = SHEAR_LONG[cls] || [12, 10];
-        const el = document.getElementById("matInfo");
-        el.style.display = "grid";
-        el.innerHTML = `
-    <div class="info-box"><div class="lbl">E// x-x (kgf/cm²)</div><div class="val">${Exx.toLocaleString()}</div></div>
-    <div class="info-box"><div class="lbl">E// y-y (kgf/cm²)</div><div class="val">${Eyy.toLocaleString()}</div></div>
-    <div class="info-box"><div class="lbl">Sfc / Lfc</div><div class="val">${Sfc} / ${Sfc / 2}</div></div>
-    <div class="info-box"><div class="lbl">Sft / Lft</div><div class="val">${Sft} / ${Sft / 2}</div></div>
-    <div class="info-box"><div class="lbl">Sfb-x(+) / Lfb</div><div class="val">${SfbxP} / ${SfbxP / 2}</div></div>
-    <div class="info-box"><div class="lbl">Sfb-y(+) / Lfb</div><div class="val">${SfbyP} / ${SfbyP / 2}</div></div>
-    <div class="info-box"><div class="lbl">Sfsx / Lfsx</div><div class="val">${Sfsx} / ${sh[0]}</div></div>
-    <div class="info-box"><div class="lbl">Sfsy / Lfsy</div><div class="val">${Sfsy} / ${sh[1]}</div></div>`;
+        const grade = document.getElementById("matGrade").value;
+        const isCustom = grade === "__custom__";
+        document.getElementById("customMatWrap").style.display = isCustom
+          ? "block"
+          : "none";
+        const matInfoEl = document.getElementById("matInfo");
+        matInfoEl.style.display = isCustom ? "none" : "grid";
+        if (isCustom) {
+          updateCustomMatInfo();
+        } else {
+          const m = getMat(grade);
+          if (!m) return;
+          const [, cls, Sfsx, Sfsy, Sfc, Sft, SfbxP, SfbyP, , , Exx, Eyy] = m;
+          const sh = SHEAR_LONG[cls] || [12, 10];
+          matInfoEl.innerHTML = `
+    ${ibox("E// x-x", Exx.toLocaleString())}${ibox("E// y-y", Eyy.toLocaleString())}
+    ${ibox("Sfc / Lfc", `${Sfc} / ${Sfc / 2}`)}${ibox("Sft / Lft", `${Sft} / ${Sft / 2}`)}
+    ${ibox("Sfb-x / Lfb", `${SfbxP} / ${SfbxP / 2}`)}${ibox("Sfb-y / Lfb", `${SfbyP} / ${SfbyP / 2}`)}
+    ${ibox("Sfsx / Lfsx", `${Sfsx} / ${sh[0]}`)}${ibox("Sfsy / Lfsy", `${Sfsy} / ${sh[1]}`)}`;
+        }
         updateSecInfo();
+        calcCharring();
+      }
+
+      function updateCustomMatInfo() {
+        const Sfc = +document.getElementById("cust_Sfc").value || 0;
+        const Sft = +document.getElementById("cust_Sft").value || 0;
+        const SfbxP = +document.getElementById("cust_SfbxP").value || 0;
+        const SfbyP = +document.getElementById("cust_SfbyP").value || 0;
+        const Sfsx = +document.getElementById("cust_Sfsx").value || 0;
+        const Sfsy = +document.getElementById("cust_Sfsy").value || 0;
+        const Exx = +document.getElementById("cust_Exx").value || 0;
+        const Eyy = +document.getElementById("cust_Eyy").value || 0;
+        document.getElementById("customMatInfo").innerHTML = `
+    ${ibox("E// x-x", Exx.toLocaleString())}${ibox("E// y-y", Eyy.toLocaleString())}
+    ${ibox("Sfc / Lfc", `${Sfc} / ${Sfc / 2}`)}${ibox("Sft / Lft", `${Sft} / ${Sft / 2}`)}
+    ${ibox("Sfbx / Lfbx", `${SfbxP} / ${SfbxP / 2}`)}${ibox("Sfby / Lfby", `${SfbyP} / ${SfbyP / 2}`)}
+    ${ibox("Sfsx / Lfsx", `${Sfsx} / ${Sfsx / 2}`)}${ibox("Sfsy / Lfsy", `${Sfsy} / ${Sfsy / 2}`)}`;
+        updateSecInfo();
+        calcCharring();
+      }
+
+      function getEffectiveMat() {
+        const grade = document.getElementById("matGrade").value;
+        if (grade !== "__custom__") return getMat(grade);
+        const name = document.getElementById("cust_name").value || "自訂材料";
+        const cls = +document.getElementById("cust_cls").value || 3;
+        const Exx = +document.getElementById("cust_Exx").value || 0;
+        const Eyy = +document.getElementById("cust_Eyy").value || 0;
+        const Sfc = +document.getElementById("cust_Sfc").value || 0;
+        const Sft = +document.getElementById("cust_Sft").value || 0;
+        const SfbxP = +document.getElementById("cust_SfbxP").value || 0;
+        const SfbyP = +document.getElementById("cust_SfbyP").value || 0;
+        const Sfsx = +document.getElementById("cust_Sfsx").value || 0;
+        const Sfsy = +document.getElementById("cust_Sfsy").value || 0;
+        // format: [grade, cls, Sfsx, Sfsy, Sfc, Sft, SfbxP, SfbyP, SfbxN, SfbyN, Exx, Eyy]
+        return [
+          name,
+          cls,
+          Sfsx,
+          Sfsy,
+          Sfc,
+          Sft,
+          SfbxP,
+          SfbyP,
+          SfbxP,
+          SfbyP,
+          Exx,
+          Eyy,
+        ];
       }
 
       function updateSecInfo() {
-        const b = +document.getElementById("b").value || 0;
-        const h = +document.getElementById("h").value || 0;
+        const b = +document.getElementById("b").value || 0,
+          h = +document.getElementById("h").value || 0;
         if (!b || !h) return;
         const A = b * h,
           Zex = (b * h * h) / 6,
@@ -1056,14 +1351,98 @@
           Ix = (b * h * h * h) / 12;
         const el = document.getElementById("secInfo");
         el.style.display = "grid";
-        el.innerHTML = `
-    <div class="info-box"><div class="lbl">A (cm²)</div><div class="val">${A.toFixed(1)}</div></div>
-    <div class="info-box"><div class="lbl">Zex (cm³)</div><div class="val">${Zex.toFixed(1)}</div></div>
-    <div class="info-box"><div class="lbl">Zey (cm³)</div><div class="val">${Zey.toFixed(1)}</div></div>
-    <div class="info-box"><div class="lbl">Ix (cm⁴)</div><div class="val">${Ix.toFixed(0)}</div></div>`;
+        el.innerHTML = `${ibox("A (cm²)", A.toFixed(1))}${ibox("Zex (cm³)", Zex.toFixed(1))}${ibox("Zey (cm³)", Zey.toFixed(1))}${ibox("Ix (cm⁴)", Ix.toFixed(0))}`;
+        updateFireSec();
       }
 
-      // ── Formulas ─────────────────────────────────
+      function toggleFire() {
+        const on = document.getElementById("chkFire").checked;
+        document.getElementById("fireInputs").style.display = on
+          ? "block"
+          : "none";
+        document.getElementById("fireForcesWrap").style.display = on
+          ? "block"
+          : "none";
+        if (on) calcCharring();
+      }
+
+      function calcCharring() {
+        const grade = document.getElementById("matGrade").value;
+        const dur = +document.getElementById("fireDuration").value || 30;
+        const [rs, rb] = getCharRate(grade);
+        const aS_auto = (rs * dur).toFixed(2),
+          aB_auto = (rb * dur).toFixed(2);
+        const asEl = document.getElementById("aS"),
+          abEl = document.getElementById("aB");
+        if (!asEl.value || asEl.dataset.auto === "1") {
+          asEl.value = aS_auto;
+          asEl.dataset.auto = "1";
+        }
+        if (!abEl.value || abEl.dataset.auto === "1") {
+          abEl.value = aB_auto;
+          abEl.dataset.auto = "1";
+        }
+        updateFireSec();
+      }
+      document
+        .getElementById("fireDuration")
+        .addEventListener("change", calcCharring);
+      document.getElementById("aS").addEventListener("input", function () {
+        this.dataset.auto = "0";
+        updateFireSec();
+      });
+      document.getElementById("aB").addEventListener("input", function () {
+        this.dataset.auto = "0";
+        updateFireSec();
+      });
+
+      function getFireReducedDims() {
+        const b = +document.getElementById("b").value || 0,
+          h = +document.getElementById("h").value || 0;
+        const aS = +document.getElementById("aS").value || 0,
+          aB = +document.getElementById("aB").value || 0;
+        const exp = document.getElementById("fireExposure").value;
+        let br = b,
+          hr = h;
+        if (exp === "3B") {
+          br = b - 2 * aS;
+          hr = h - aB;
+        } else if (exp === "4") {
+          br = b - 2 * aS;
+          hr = h - 2 * aS;
+        } else if (exp === "2S") {
+          br = b - 2 * aS;
+          hr = h;
+        }
+        return {
+          br: Math.max(br, 0),
+          hr: Math.max(hr, 0),
+          valid: br > 0 && hr > 0,
+        };
+      }
+
+      function updateFireSec() {
+        if (!document.getElementById("chkFire").checked) return;
+        const { br, hr, valid } = getFireReducedDims();
+        const el = document.getElementById("fireSecInfo");
+        el.style.display = "grid";
+        if (!valid) {
+          el.innerHTML = `<div class="info-box" style="grid-column:span 4;color:#e53e3e;font-weight:700">⚠ 炭化後斷面消失，請檢查輸入值！</div>`;
+          return;
+        }
+        const Ar = br * hr,
+          Zexr = (br * hr * hr) / 6,
+          Zeyr = (hr * br * br) / 6,
+          Ixr = (br * hr * hr * hr) / 12;
+        el.innerHTML = `
+    ${iboxF("b_r × h_r", `${br.toFixed(2)}×${hr.toFixed(2)} cm`)}
+    ${iboxF("A_r (cm²)", Ar.toFixed(1))}${iboxF("Zex_r (cm³)", Zexr.toFixed(1))}${iboxF("Zey_r (cm³)", Zeyr.toFixed(1))}`;
+      }
+      document
+        .getElementById("fireExposure")
+        .addEventListener("change", updateFireSec);
+
+      // ── Math helpers ──
       function etaFn(lam) {
         if (lam <= 30) return 1.0;
         if (lam <= 100) return 1.3 - 0.01 * lam;
@@ -1074,52 +1453,36 @@
       }
       function cbFn(le, h, b, Eyy, Lfbxx) {
         if (b <= 0 || h <= 0 || Lfbxx <= 0) return 1.0;
-        const Ck = 0.8 * Math.sqrt(Eyy / Lfbxx);
-        const Cs = Math.sqrt((le * h) / (b * b));
+        const Ck = 0.8 * Math.sqrt(Eyy / Lfbxx),
+          Cs = Math.sqrt((le * h) / (b * b));
         if (Cs <= 10) return 1.0;
         if (Cs < Ck) return 1 - Math.pow(Cs / Ck, 4 / 3);
         return Math.max(0.1, (0.4 * Eyy) / (Cs * Cs * Lfbxx));
       }
 
-      // ── Shared state for PDF ─────────────────────
-      let lastResult = null;
-
-      // ── Calculate ────────────────────────────────
-      function calculate() {
-        const grade = document.getElementById("matGrade").value;
-        const m = getMat(grade);
-        if (!m) {
-          alert("請選擇材料等級");
-          return;
-        }
-        const [, cls, Sfsx, Sfsy, Sfc, Sft, SfbxP, SfbyP, , , Exx, Eyy] = m;
-        const sh = SHEAR_LONG[cls] || [12, 10];
-        const Lfsx = sh[0],
-          Lfsy = sh[1];
-        const Lfc = Sfc / 2,
-          Lft = Sft / 2,
-          LfbxP = SfbxP / 2,
-          LfbyP = SfbyP / 2;
-
-        const b = +document.getElementById("b").value;
-        const h = +document.getElementById("h").value;
-        const L0 = +document.getElementById("L0").value;
-        const Kx = +document.getElementById("Kx").value;
-        const Ky = +document.getElementById("Ky").value;
-        const LbLx = +document.getElementById("LbL0x").value;
-        const LbLy = +document.getElementById("LbL0y").value;
-        const PL = +document.getElementById("PL").value,
-          M3L = +document.getElementById("M3L").value;
-        const M2L = +document.getElementById("M2L").value,
-          V3L = +document.getElementById("V3L").value;
-        const V2L = +document.getElementById("V2L").value;
-        const PS = +document.getElementById("PS").value,
-          M3S = +document.getElementById("M3S").value;
-        const M2S = +document.getElementById("M2S").value,
-          V3S = +document.getElementById("V3S").value;
-        const V2S = +document.getElementById("V2S").value;
-
-        // Section
+      // One set of DCR calcs for a given section and forces
+      function calcDCR(
+        b,
+        h,
+        L0,
+        Kx,
+        Ky,
+        LbLx,
+        LbLy,
+        P,
+        M3,
+        M2,
+        V3,
+        V2,
+        fc,
+        ft,
+        fbxP,
+        fbyP,
+        Exx,
+        Eyy,
+        fsx,
+        fsy,
+      ) {
         const A = b * h,
           Zex = (b * h * h) / 6,
           Zey = (h * b * b) / 6;
@@ -1127,73 +1490,216 @@
           Iy = (h * b * b * b) / 12;
         const ix = Math.sqrt(Ix / A),
           iy = Math.sqrt(Iy / A);
-
-        // Buckling length
         const lkx = Kx * LbLx * L0,
           lky = Ky * LbLy * L0;
         const lamX = lkx / ix,
           lamY = lky / iy,
           lamMax = Math.max(lamX, lamY);
         const etaV = etaFn(lamMax);
-        const Lfk = etaV * Lfc,
-          Sfk = etaV * Sfc;
-
-        // Size & Cb
+        const fk = etaV * fc;
         const Cfx = cfFn(h),
           Cfy = cfFn(b);
-        const CbX = cbFn(LbLx * L0, h, b, Eyy, LfbxP);
-        const CbY = cbFn(LbLy * L0, b, h, Exx, LfbyP);
+        const CbX = cbFn(LbLx * L0, h, b, Eyy, fbxP / 2 || fbxP);
+        const CbY = cbFn(LbLy * L0, b, h, Exx, fbyP / 2 || fbyP);
+        const aFb3 = fbxP * Cfx * CbX,
+          aFb2 = fbyP * Cfy * CbY;
+        const isComp = P < 0;
+        const Fc = Math.abs(P) / A,
+          Ft = Math.max(P, 0) / A;
+        const DCRax = isComp ? (fk > 0 ? Fc / fk : 99) : ft > 0 ? Ft / ft : 0;
+        const Fb3 = Math.abs(M3) / Zex,
+          Fb2 = Math.abs(M2) / Zey;
+        const DCRb3 = aFb3 > 0 ? Fb3 / aFb3 : 0,
+          DCRb2 = aFb2 > 0 ? Fb2 / aFb2 : 0;
+        const DCRPM = DCRb3 + DCRb2 + DCRax;
+        const DCRs3 = fsx > 0 ? (1.5 * Math.abs(V3)) / A / fsx : 0;
+        const DCRs2 = fsy > 0 ? (1.5 * Math.abs(V2)) / A / fsy : 0;
+        return {
+          A,
+          Zex,
+          Zey,
+          ix,
+          iy,
+          lamX,
+          lamY,
+          lamMax,
+          etaV,
+          fk,
+          Cfx,
+          Cfy,
+          CbX,
+          CbY,
+          aFb3,
+          aFb2,
+          isComp,
+          Fc,
+          Ft,
+          DCRax,
+          DCRb3,
+          DCRb2,
+          DCRPM,
+          DCRs3,
+          DCRs2,
+        };
+      }
 
-        // Allowable bending
-        const aFb3L = LfbxP * Cfx * CbX,
-          aFb2L = LfbyP * Cfy * CbY;
-        const aFb3S = SfbxP * Cfx * CbX,
-          aFb2S = SfbyP * Cfy * CbY;
+      let lastResult = null;
 
-        // ─ LONG-TERM ─
-        const isCompL = PL < 0;
-        const Fc_L = Math.abs(PL) / A,
-          Ft_L = Math.max(PL, 0) / A;
-        const DCRc_L = isCompL ? (Lfk > 0 ? Fc_L / Lfk : 99) : 0;
-        const DCRt_L = !isCompL ? (Lft > 0 ? Ft_L / Lft : 0) : 0;
-        const Fb3L = Math.abs(M3L) / Zex,
-          Fb2L = Math.abs(M2L) / Zey;
-        const DCRb3L = aFb3L > 0 ? Fb3L / aFb3L : 0,
-          DCRb2L = aFb2L > 0 ? Fb2L / aFb2L : 0;
-        const DCRax_L = isCompL ? DCRc_L : DCRt_L;
-        const DCRPM_L = DCRb3L + DCRb2L + DCRax_L;
-        const fs3L = (1.5 * Math.abs(V3L)) / A,
-          fs2L = (1.5 * Math.abs(V2L)) / A;
-        const DCRs3L = Lfsx > 0 ? fs3L / Lfsx : 0,
-          DCRs2L = Lfsy > 0 ? fs2L / Lfsy : 0;
+      function calculate() {
+        const grade = document.getElementById("matGrade").value;
+        const m = getEffectiveMat();
+        if (!m) {
+          alert("請選擇或輸入材料等級");
+          return;
+        }
+        // Validate custom material inputs
+        if (grade === "__custom__") {
+          const missing = [
+            "cust_Exx",
+            "cust_Eyy",
+            "cust_Sfc",
+            "cust_Sft",
+            "cust_SfbxP",
+            "cust_SfbyP",
+            "cust_Sfsx",
+            "cust_Sfsy",
+          ].filter((id) => !(+document.getElementById(id).value > 0));
+          if (missing.length) {
+            alert("請填寫所有自訂材料參數（不可為零）");
+            return;
+          }
+        }
+        const [, cls, Sfsx, Sfsy, Sfc, Sft, SfbxP, SfbyP, , , Exx, Eyy] = m;
+        const sh = SHEAR_LONG[cls] || [12, 10];
+        const Lfsx = sh[0],
+          Lfsy = sh[1],
+          Lfc = Sfc / 2,
+          Lft = Sft / 2,
+          LfbxP_L = SfbxP / 2,
+          LfbyP_L = SfbyP / 2;
 
-        // ─ SHORT-TERM ─
-        const isCompS = PS < 0;
-        const Fc_S = Math.abs(PS) / A,
-          Ft_S = Math.max(PS, 0) / A;
-        const DCRc_S = isCompS ? (Sfk > 0 ? Fc_S / Sfk : 99) : 0;
-        const DCRt_S = !isCompS ? (Sft > 0 ? Ft_S / Sft : 0) : 0;
-        const Fb3S = Math.abs(M3S) / Zex,
-          Fb2S = Math.abs(M2S) / Zey;
-        const DCRb3S = aFb3S > 0 ? Fb3S / aFb3S : 0,
-          DCRb2S = aFb2S > 0 ? Fb2S / aFb2S : 0;
-        const DCRax_S = isCompS ? DCRc_S : DCRt_S;
-        const DCRPM_S = DCRb3S + DCRb2S + DCRax_S;
-        const fs3S = (1.5 * Math.abs(V3S)) / A,
-          fs2S = (1.5 * Math.abs(V2S)) / A;
-        const DCRs3S = Sfsx > 0 ? fs3S / Sfsx : 0,
-          DCRs2S = Sfsy > 0 ? fs2S / Sfsy : 0;
+        const b = +document.getElementById("b").value,
+          h = +document.getElementById("h").value;
+        const L0 = +document.getElementById("L0").value;
+        const Kx = +document.getElementById("Kx").value,
+          Ky = +document.getElementById("Ky").value;
+        const LbLx = +document.getElementById("LbL0x").value,
+          LbLy = +document.getElementById("LbL0y").value;
+        const PL = +document.getElementById("PL").value,
+          M3L = +document.getElementById("M3L").value;
+        const M2L = +document.getElementById("M2L").value,
+          V3L = +document.getElementById("V3L").value,
+          V2L = +document.getElementById("V2L").value;
+        const PS = +document.getElementById("PS").value,
+          M3S = +document.getElementById("M3S").value;
+        const M2S = +document.getElementById("M2S").value,
+          V3S = +document.getElementById("V3S").value,
+          V2S = +document.getElementById("V2S").value;
 
-        const maxDCR = Math.max(
-          DCRPM_L,
-          DCRPM_S,
-          DCRs3L,
-          DCRs2L,
-          DCRs3S,
-          DCRs2S,
+        // Long-term: use Lf allowable
+        const dL = calcDCR(
+          b,
+          h,
+          L0,
+          Kx,
+          Ky,
+          LbLx,
+          LbLy,
+          PL,
+          M3L,
+          M2L,
+          V3L,
+          V2L,
+          Lfc,
+          Lft,
+          LfbxP_L,
+          LfbyP_L,
+          Exx,
+          Eyy,
+          Lfsx,
+          Lfsy,
+        );
+        // Short-term: use Sf allowable — pass already halved Cf/Cb will use Sf directly
+        // For cbFn long-term lfbxx param = Sfb/2 for short-term Cb calc consistency
+        const dS = calcDCR(
+          b,
+          h,
+          L0,
+          Kx,
+          Ky,
+          LbLx,
+          LbLy,
+          PS,
+          M3S,
+          M2S,
+          V3S,
+          V2S,
+          Sfc,
+          Sft,
+          SfbxP,
+          SfbyP,
+          Exx,
+          Eyy,
+          Sfsx,
+          Sfsy,
         );
 
-        // Save for PDF
+        // Fire check
+        const doFire = document.getElementById("chkFire").checked;
+        let dF = null,
+          fireInfo = null;
+        if (doFire) {
+          const { br, hr, valid } = getFireReducedDims();
+          if (!valid) {
+            alert("防火後折減斷面尺寸為零，請檢查炭化深度設定！");
+            return;
+          }
+          const PF = +document.getElementById("PF").value,
+            M3F = +document.getElementById("M3F").value;
+          const M2F = +document.getElementById("M2F").value,
+            V3F = +document.getElementById("V3F").value,
+            V2F = +document.getElementById("V2F").value;
+          const aS = +document.getElementById("aS").value,
+            aB = +document.getElementById("aB").value;
+          const dur = +document.getElementById("fireDuration").value;
+          const exp = document.getElementById("fireExposure").value;
+          // Fire uses short-term allowable, Cb calc using Sf/2 as approximate
+          dF = calcDCR(
+            br,
+            hr,
+            L0,
+            Kx,
+            Ky,
+            LbLx,
+            LbLy,
+            PF,
+            M3F,
+            M2F,
+            V3F,
+            V2F,
+            Sfc,
+            Sft,
+            SfbxP,
+            SfbyP,
+            Exx,
+            Eyy,
+            Sfsx,
+            Sfsy,
+          );
+          fireInfo = { br, hr, aS, aB, dur, exp, PF, M3F, M2F, V3F, V2F };
+        }
+
+        const allDCR = [
+          dL.DCRPM,
+          dS.DCRPM,
+          dL.DCRs3,
+          dL.DCRs2,
+          dS.DCRs3,
+          dS.DCRs2,
+        ];
+        if (dF) allDCR.push(dF.DCRPM, dF.DCRs3, dF.DCRs2);
+        const maxDCR = Math.max(...allDCR);
+
         lastResult = {
           grade,
           b,
@@ -1224,129 +1730,103 @@
           cls,
           Lfc,
           Lft,
-          LfbxP,
-          LfbyP,
+          LfbxP_L,
+          LfbyP_L,
           Lfsx,
           Lfsy,
-          Sfk,
-          Lfk,
-          A,
-          Zex,
-          Zey,
-          Ix,
-          Iy,
-          ix,
-          iy,
-          lkx,
-          lky,
-          lamX,
-          lamY,
-          lamMax,
-          etaV,
-          Cfx,
-          Cfy,
-          CbX,
-          CbY,
-          aFb3L,
-          aFb2L,
-          aFb3S,
-          aFb2S,
-          isCompL,
-          isCompS,
-          Fc_L,
-          Ft_L,
-          Fc_S,
-          Ft_S,
-          DCRc_L,
-          DCRt_L,
-          DCRb3L,
-          DCRb2L,
-          DCRax_L,
-          DCRPM_L,
-          DCRs3L,
-          DCRs2L,
-          DCRc_S,
-          DCRt_S,
-          DCRb3S,
-          DCRb2S,
-          DCRax_S,
-          DCRPM_S,
-          DCRs3S,
-          DCRs2S,
+          dL,
+          dS,
+          dF,
+          fireInfo,
+          doFire,
           maxDCR,
         };
 
-        // ── Render results ──
+        // ── Render ──
         const overall =
           maxDCR <= 1
-            ? '<span style="color:#276749;font-size:18px;font-weight:700">&#10003; PASS</span>'
-            : '<span style="color:#e53e3e;font-size:18px;font-weight:700">&#10007; FAIL</span>';
+            ? '<span style="color:#276749;font-size:17px;font-weight:700">&#10003; PASS</span>'
+            : '<span style="color:#e53e3e;font-size:17px;font-weight:700">&#10007; FAIL</span>';
 
-        document.getElementById("resultBody").innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <div style="font-size:13px;color:#718096">控制 DCR = <b style="font-size:16px;color:${maxDCR > 1 ? "#e53e3e" : "#276749"}">${maxDCR.toFixed(3)}</b></div>
-      ${overall}
+        let html = `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <div>控制 DCR = <b style="font-size:16px;color:${maxDCR > 1 ? "#e53e3e" : "#276749"}">${maxDCR.toFixed(3)}</b></div>${overall}
+  </div>
+
+  <div class="result-section">
+    <h4>斷面 &amp; 修正係數（一般）</h4>
+    <div class="info-grid">
+      ${ibox("A (cm²)", dL.A.toFixed(1))}${ibox("ix/iy", `${dL.ix.toFixed(2)}/${dL.iy.toFixed(2)}`)}
+      ${ibox("λx/λy", `${dL.lamX.toFixed(1)}/${dL.lamY.toFixed(1)}`)}${ibox("η", dL.etaV.toFixed(3))}
+      ${ibox("Cfx/Cfy", `${dL.Cfx.toFixed(3)}/${dL.Cfy.toFixed(3)}`)}${ibox("Cbx/Cby", `${dL.CbX.toFixed(3)}/${dL.CbY.toFixed(3)}`)}
+      ${ibox("Zex (cm³)", dL.Zex.toFixed(1))}${ibox("Zey (cm³)", dL.Zey.toFixed(1))}
     </div>
+  </div><div class="sep"></div>
 
-    <div class="result-section">
-      <h4>斷面 &amp; 修正係數</h4>
+  <div class="result-section"><h4>軸彎複合比 P-M</h4>
+    ${bar("軸力（" + (dL.isComp ? "壓" : "拉") + "）", dL.DCRax, "L")}
+    ${bar("撓曲 M3 x-x", dL.DCRb3, "L")}${bar("撓曲 M2 y-y", dL.DCRb2, "L")}
+    ${bar("P-M 複合 Σ", dL.DCRPM, "L")}
+    <div style="height:4px"></div>
+    ${bar("軸力（" + (dS.isComp ? "壓" : "拉") + "）", dS.DCRax, "S")}
+    ${bar("撓曲 M3 x-x", dS.DCRb3, "S")}${bar("撓曲 M2 y-y", dS.DCRb2, "S")}
+    ${bar("P-M 複合 Σ", dS.DCRPM, "S")}
+  </div><div class="sep"></div>
+
+  <div class="result-section"><h4>剪應力比</h4>
+    ${bar("V3 (x-x)", dL.DCRs3, "L")}${bar("V2 (y-y)", dL.DCRs2, "L")}
+    ${bar("V3 (x-x)", dS.DCRs3, "S")}${bar("V2 (y-y)", dS.DCRs2, "S")}
+  </div>`;
+
+        if (doFire && dF) {
+          const fi = fireInfo;
+          const expLabel =
+            {
+              "3B": "三面（底+兩側）",
+              4: "四面（全周）",
+              "2S": "二面（兩側）",
+            }[fi.exp] || fi.exp;
+          html += `<div class="sep-fire"></div>
+    <div class="result-section fire-sec">
+      <h4>&#128293; 防火炭化折減斷面（${fi.dur} min · ${expLabel}）</h4>
       <div class="info-grid">
-        ${ibox("A (cm²)", A.toFixed(1))}${ibox("ix / iy", `${ix.toFixed(2)}/${iy.toFixed(2)}`)}
-        ${ibox("λx / λy", `${lamX.toFixed(1)}/${lamY.toFixed(1)}`)}${ibox("η", etaV.toFixed(3))}
-        ${ibox("Cfx / Cfy", `${Cfx.toFixed(3)}/${Cfy.toFixed(3)}`)}${ibox("Cbx / Cby", `${CbX.toFixed(3)}/${CbY.toFixed(3)}`)}
-        ${ibox("Zex (cm³)", Zex.toFixed(1))}${ibox("Zey (cm³)", Zey.toFixed(1))}
+        ${iboxF("a_s / a_b (cm)", `${fi.aS}/${fi.aB}`)}${iboxF("b_r × h_r", `${fi.br.toFixed(2)}×${fi.hr.toFixed(2)}`)}
+        ${iboxF("A_r (cm²)", dF.A.toFixed(1))}${iboxF("η_r", dF.etaV.toFixed(3))}
+        ${iboxF("λx_r/λy_r", `${dF.lamX.toFixed(1)}/${dF.lamY.toFixed(1)}`)}${iboxF("Cfx_r/Cfy_r", `${dF.Cfx.toFixed(3)}/${dF.Cfy.toFixed(3)}`)}
+        ${iboxF("Zex_r (cm³)", dF.Zex.toFixed(1))}${iboxF("Zey_r (cm³)", dF.Zey.toFixed(1))}
       </div>
-    </div>
-    <div class="sep"></div>
-
-    <div class="result-section">
-      <h4>軸彎複合比（P-M）</h4>
-      ${bar("軸力 " + (isCompL ? "壓" : "拉"), isCompL ? DCRc_L : DCRt_L, "L")}
-      ${bar("撓曲 M3 (x-x)", DCRb3L, "L")}
-      ${bar("撓曲 M2 (y-y)", DCRb2L, "L")}
-      ${bar("P-M 複合 Σ", DCRPM_L, "L")}
-      <div style="height:4px"></div>
-      ${bar("軸力 " + (isCompS ? "壓" : "拉"), isCompS ? DCRc_S : DCRt_S, "S")}
-      ${bar("撓曲 M3 (x-x)", DCRb3S, "S")}
-      ${bar("撓曲 M2 (y-y)", DCRb2S, "S")}
-      ${bar("P-M 複合 Σ", DCRPM_S, "S")}
-    </div>
-    <div class="sep"></div>
-
-    <div class="result-section">
-      <h4>剪應力比</h4>
-      ${bar("剪力 V3 (x-x)", DCRs3L, "L")}${bar("剪力 V2 (y-y)", DCRs2L, "L")}
-      ${bar("剪力 V3 (x-x)", DCRs3S, "S")}${bar("剪力 V2 (y-y)", DCRs2S, "S")}
-    </div>
-    <div class="sep"></div>
-
-    <div class="result-section">
-      <h4>容許應力（kgf/cm²）</h4>
-      <div class="info-grid">
-        ${ibox("Lfk=η·Lfc", Lfk.toFixed(1))}${ibox("Sfk=η·Sfc", Sfk.toFixed(1))}
-        ${ibox("aFb3L", aFb3L.toFixed(1))}${ibox("aFb3S", aFb3S.toFixed(1))}
-        ${ibox("aFb2L", aFb2L.toFixed(1))}${ibox("aFb2S", aFb2S.toFixed(1))}
-        ${ibox("Lfs x/y", `${Lfsx}/${Lfsy}`)}${ibox("Sfs x/y", `${Sfsx}/${Sfsy}`)}
-      </div>
+      <div style="height:8px"></div>
+      ${bar("軸力（" + (dF.isComp ? "壓" : "拉") + "）", dF.DCRax, "F")}
+      ${bar("撓曲 M3 x-x", dF.DCRb3, "F")}${bar("撓曲 M2 y-y", dF.DCRb2, "F")}
+      ${bar("P-M 複合 Σ &#128293;", dF.DCRPM, "F")}
+      ${bar("V3 (x-x)", dF.DCRs3, "F")}${bar("V2 (y-y)", dF.DCRs2, "F")}
     </div>`;
+        } else if (!doFire) {
+          html += `<div class="sep"></div><div style="font-size:11px;color:#a0aec0;text-align:center;padding:6px">防火檢核未啟用</div>`;
+        }
+
+        document.getElementById("resultBody").innerHTML = html;
       }
 
+      // ── UI helpers ──
       function ibox(l, v) {
         return `<div class="info-box"><div class="lbl">${l}</div><div class="val">${v}</div></div>`;
+      }
+      function iboxF(l, v) {
+        return `<div class="info-box fire-box"><div class="lbl">${l}</div><div class="val">${v}</div></div>`;
       }
       function bar(label, dcr, tag) {
         const pct = Math.min(dcr * 100, 100);
         const col = dcr > 1 ? "#fc8181" : dcr > 0.8 ? "#f6ad55" : "#68d391";
-        const st = dcr > 1 ? "ng" : "ok";
         return `<div class="dcr-row">
     <div class="dcr-label">${label}<span class="tag tag-${tag}">${tag}</span></div>
     <div class="dcr-bar-wrap"><div class="dcr-bar" style="width:${pct}%;background:${col}"></div></div>
     <div class="dcr-val" style="color:${dcr > 1 ? "#e53e3e" : dcr > 0.8 ? "#c05621" : "#276749"}">${dcr.toFixed(3)}</div>
-    <div class="dcr-status ${st}">${dcr > 1 ? "NG" : "OK"}</div>
+    <div class="dcr-status ${dcr > 1 ? "ng" : "ok"}">${dcr > 1 ? "NG" : "OK"}</div>
   </div>`;
       }
 
-      // ── PDF Export ───────────────────────────────
+      // ── PDF Export ──
       function exportPDF() {
         if (!lastResult) {
           alert("請先執行設計檢核");
@@ -1358,106 +1838,97 @@
           month: "2-digit",
           day: "2-digit",
         });
-        const v = (n, d = 3) => (typeof n === "number" ? n.toFixed(d) : n);
-        const stl = (d) => (d > 1 ? "color:#9b2335;font-weight:700" : "");
-        const ok = (d) => `<span style="${stl(d)}">${d.toFixed(3)}</span>`;
-        const judge = (d) =>
+        const v = (n, d = 3) =>
+          typeof n === "number" ? n.toFixed(d) : String(n);
+        const ok = (d) =>
+          `<span style="${d > 1 ? "color:#9b2335;font-weight:700" : ""}">${d.toFixed(3)}</span>`;
+        const jd = (d) =>
           d <= 1
             ? '<b style="color:#276749">OK</b>'
             : '<b style="color:#9b2335">NG</b>';
+        const expLabel = {
+          "3B": "三面（底+兩側）",
+          4: "四面（全周）",
+          "2S": "二面（兩側）",
+        };
+
+        const dcrRow = (name, eq, dL, dS, dF) => `<tr>
+    <td>${name}</td><td class="eq">${eq}</td>
+    <td class="num">${ok(dL)}</td><td>${jd(dL)}</td>
+    <td class="num">${ok(dS)}</td><td>${jd(dS)}</td>
+    ${dF !== undefined ? `<td class="num">${ok(dF)}</td><td>${jd(dF)}</td>` : '<td colspan="2" style="color:#a0aec0;text-align:center">未檢核</td>'}
+  </tr>`;
+
+        const dL = r.dL,
+          dS = r.dS,
+          dF = r.dF;
+        const fi = r.fireInfo || {};
 
         const html = `
-  <div class="pr-title">木竹構材設計檢核計算書</div>
-  <div class="pr-sub">單支構材 · 纖維方向容許應力法　　計算日期：${now}</div>
+  <div class="pr-title">木構材設計檢核計算書</div>
+  <div class="pr-sub">單支構材 · 纖維方向容許應力法 &nbsp;|&nbsp; 計算日期：${now}</div>
 
   <div class="pr-section">
     <h3>一、基本參數</h3>
     <table class="ptbl">
-      <tr><th colspan="2">材料</th><th colspan="2">斷面</th></tr>
-      <tr><td>材料等級</td><td class="num">${r.grade}</td><td>寬 b</td><td class="num">${r.b} cm</td></tr>
-      <tr><td>E//x-x</td><td class="num">${r.Exx.toLocaleString()} kgf/cm²</td><td>高 h</td><td class="num">${r.h} cm</td></tr>
-      <tr><td>E//y-y</td><td class="num">${r.Eyy.toLocaleString()} kgf/cm²</td><td>斷面積 A</td><td class="num">${v(r.A, 1)} cm²</td></tr>
-      <tr><td>Sfc / Lfc</td><td class="num">${r.Sfc} / ${r.Lfc} kgf/cm²</td><td>Zex / Zey</td><td class="num">${v(r.Zex, 1)} / ${v(r.Zey, 1)} cm³</td></tr>
-      <tr><td>Sft / Lft</td><td class="num">${r.Sft} / ${r.Lft} kgf/cm²</td><td>ix / iy</td><td class="num">${v(r.ix, 3)} / ${v(r.iy, 3)} cm</td></tr>
-      <tr><td>Sfb-x / Lfb</td><td class="num">${r.SfbxP} / ${r.LfbxP} kgf/cm²</td><td>L₀</td><td class="num">${r.L0} cm</td></tr>
-      <tr><td>Sfb-y / Lfb</td><td class="num">${r.SfbyP} / ${r.LfbyP} kgf/cm²</td><td>Kx / Ky</td><td class="num">${r.Kx} / ${r.Ky}</td></tr>
-      <tr><td>Sfsx / Lfsx</td><td class="num">${r.Sfsx} / ${r.Lfsx} kgf/cm²</td><td>(Lb/L₀)x / y</td><td class="num">${r.LbLx} / ${r.LbLy}</td></tr>
+      <tr><th colspan="2">材料</th><th colspan="2">斷面</th><th colspan="2">計算長度</th></tr>
+      <tr><td>等級</td><td class="num">${r.grade}</td><td>b × h</td><td class="num">${r.b} × ${r.h} cm</td><td>L₀</td><td class="num">${r.L0} cm</td></tr>
+      <tr><td>E//x / E//y</td><td class="num">${r.Exx.toLocaleString()} / ${r.Eyy.toLocaleString()}</td><td>A</td><td class="num">${dL.A.toFixed(1)} cm²</td><td>Kx / Ky</td><td class="num">${r.Kx} / ${r.Ky}</td></tr>
+      <tr><td>Sfc / Lfc</td><td class="num">${r.Sfc} / ${r.Lfc}</td><td>Zex / Zey</td><td class="num">${dL.Zex.toFixed(1)} / ${dL.Zey.toFixed(1)} cm³</td><td>(Lb/L₀)x/y</td><td class="num">${r.LbLx} / ${r.LbLy}</td></tr>
+      <tr><td>Sfb-x / Lfb</td><td class="num">${r.SfbxP} / ${r.LfbxP_L}</td><td>ix / iy</td><td class="num">${dL.ix.toFixed(3)} / ${dL.iy.toFixed(3)} cm</td><td>λx / λy</td><td class="num">${dL.lamX.toFixed(2)} / ${dL.lamY.toFixed(2)}</td></tr>
+      <tr><td>Sfsx / Lfsx</td><td class="num">${r.Sfsx} / ${r.Lfsx}</td><td>η（折減）</td><td class="num">${dL.etaV.toFixed(4)}</td><td>Cf / Cb(x)</td><td class="num">${dL.Cfx.toFixed(4)} / ${dL.CbX.toFixed(4)}</td></tr>
     </table>
   </div>
 
   <div class="pr-section">
     <h3>二、設計載重</h3>
     <table class="ptbl">
-      <tr><th>載重項目</th><th>長期（D+L）</th><th>短期（D+L+W/E）</th></tr>
-      <tr><td>軸力 P (kgf)</td><td class="num">${r.PL}</td><td class="num">${r.PS}</td></tr>
-      <tr><td>彎矩 M3 (kgf-cm)</td><td class="num">${r.M3L}</td><td class="num">${r.M3S}</td></tr>
-      <tr><td>彎矩 M2 (kgf-cm)</td><td class="num">${r.M2L}</td><td class="num">${r.M2S}</td></tr>
-      <tr><td>剪力 V3 (kgf)</td><td class="num">${r.V3L}</td><td class="num">${r.V3S}</td></tr>
-      <tr><td>剪力 V2 (kgf)</td><td class="num">${r.V2L}</td><td class="num">${r.V2S}</td></tr>
+      <tr><th>項目</th><th>長期（D+L）</th><th>短期（D+L+W/E）</th>${r.doFire ? "<th>防火載重</th>" : ""}</tr>
+      <tr><td>軸力 P (kgf)</td><td class="num">${r.PL}</td><td class="num">${r.PS}</td>${r.doFire ? `<td class="num">${fi.PF}</td>` : ""}</tr>
+      <tr><td>M3 (kgf-cm)</td><td class="num">${r.M3L}</td><td class="num">${r.M3S}</td>${r.doFire ? `<td class="num">${fi.M3F}</td>` : ""}</tr>
+      <tr><td>M2 (kgf-cm)</td><td class="num">${r.M2L}</td><td class="num">${r.M2S}</td>${r.doFire ? `<td class="num">${fi.M2F}</td>` : ""}</tr>
+      <tr><td>V3 (kgf)</td><td class="num">${r.V3L}</td><td class="num">${r.V3S}</td>${r.doFire ? `<td class="num">${fi.V3F}</td>` : ""}</tr>
+      <tr><td>V2 (kgf)</td><td class="num">${r.V2L}</td><td class="num">${r.V2S}</td>${r.doFire ? `<td class="num">${fi.V2F}</td>` : ""}</tr>
     </table>
   </div>
 
-  <div class="pr-section">
-    <h3>三、細長比 &amp; 修正係數</h3>
-    <table class="ptbl">
-      <tr><th>項目</th><th>公式</th><th>數值</th><th>說明</th></tr>
-      <tr><td>lkx</td><td class="eq">Kx × (Lb/L₀)x × L₀ = ${r.Kx}×${r.LbLx}×${r.L0}</td><td class="num">${v(r.lkx, 2)} cm</td><td>x-x 計算長</td></tr>
-      <tr><td>lky</td><td class="eq">Ky × (Lb/L₀)y × L₀ = ${r.Ky}×${r.LbLy}×${r.L0}</td><td class="num">${v(r.lky, 2)} cm</td><td>y-y 計算長</td></tr>
-      <tr><td>λx</td><td class="eq">lkx / ix = ${v(r.lkx, 2)}/${v(r.ix, 3)}</td><td class="num">${v(r.lamX, 2)}</td><td></td></tr>
-      <tr><td>λy</td><td class="eq">lky / iy = ${v(r.lky, 2)}/${v(r.iy, 3)}</td><td class="num">${v(r.lamY, 2)}</td><td></td></tr>
-      <tr><td>λ（控制）</td><td class="eq">max(λx, λy)</td><td class="num">${v(r.lamMax, 2)}</td><td></td></tr>
-      <tr><td>η</td><td class="eq">${r.lamMax <= 30 ? "λ≤30, η=1.0" : r.lamMax <= 100 ? `1.3−0.01×${v(r.lamMax, 2)}` : `3000/${v(r.lamMax, 2)}²`}</td><td class="num">${v(r.etaV, 4)}</td><td>挫屈折減</td></tr>
-      <tr><td>Lfk</td><td class="eq">η × Lfc = ${v(r.etaV, 4)}×${r.Lfc}</td><td class="num">${v(r.Lfk, 2)} kgf/cm²</td><td>長期挫屈容許壓</td></tr>
-      <tr><td>Sfk</td><td class="eq">η × Sfc = ${v(r.etaV, 4)}×${r.Sfc}</td><td class="num">${v(r.Sfk, 2)} kgf/cm²</td><td>短期挫屈容許壓</td></tr>
-      <tr><td>Cfx</td><td class="eq">${r.h >= 30 ? `(30/${r.h})^(1/9)` : "h<30, Cf=1.0"}</td><td class="num">${v(r.Cfx, 4)}</td><td>尺寸調整(x)</td></tr>
-      <tr><td>Cfy</td><td class="eq">${r.b >= 30 ? `(30/${r.b})^(1/9)` : "b<30, Cf=1.0"}</td><td class="num">${v(r.Cfy, 4)}</td><td>尺寸調整(y)</td></tr>
-      <tr><td>Cbx</td><td class="eq">橫向挫屈係數（Cs=${v(Math.sqrt((r.LbLx * r.L0 * r.h) / (r.b * r.b)), 3)}）</td><td class="num">${v(r.CbX, 4)}</td><td>強軸橫向挫屈</td></tr>
-      <tr><td>Cby</td><td class="eq">弱軸 Cb = 1.0</td><td class="num">${v(r.CbY, 4)}</td><td></td></tr>
+  ${
+    r.doFire && dF
+      ? `
+  <div class="pr-section fire-pr">
+    <h3>&#128293; 三、防火折減斷面</h3>
+    <table class="ptbl fire-tbl">
+      <tr><th>項目</th><th>數值</th><th>說明</th></tr>
+      <tr><td>防火時效</td><td class="num">${fi.dur} 分鐘</td><td>${expLabel[fi.exp] || fi.exp}</td></tr>
+      <tr><td>側邊炭化 a_s</td><td class="num">${fi.aS} cm</td><td>每側</td></tr>
+      <tr><td>底部炭化 a_b</td><td class="num">${fi.aB} cm</td><td>底面</td></tr>
+      <tr><td>折減後 b_r × h_r</td><td class="num">${v(fi.br, 2)} × ${v(fi.hr, 2)} cm</td><td>有效斷面</td></tr>
+      <tr><td>A_r</td><td class="num">${dF.A.toFixed(2)} cm²</td><td>折減後面積</td></tr>
+      <tr><td>Zex_r / Zey_r</td><td class="num">${dF.Zex.toFixed(2)} / ${dF.Zey.toFixed(2)} cm³</td><td>折減後斷面模數</td></tr>
+      <tr><td>λx_r / λy_r</td><td class="num">${dF.lamX.toFixed(2)} / ${dF.lamY.toFixed(2)}</td><td>防火細長比</td></tr>
+      <tr><td>η_r</td><td class="num">${dF.etaV.toFixed(4)}</td><td>防火挫屈折減</td></tr>
     </table>
-  </div>
+  </div>`
+      : r.doFire
+        ? '<p style="color:#a0aec0">防火折減斷面無效</p>'
+        : ""
+  }
 
   <div class="pr-section">
-    <h3>四、設計檢核結果（DCR ≤ 1.0 為合格）</h3>
+    <h3>${r.doFire ? "四" : "三"}、設計檢核結果（DCR ≤ 1.0 為合格）</h3>
     <table class="ptbl">
-      <tr><th>檢核項目</th><th>公式</th><th>長期 DCR</th><th>判定</th><th>短期 DCR</th><th>判定</th></tr>
-      <tr>
-        <td>軸力（${r.isCompL ? "壓" : "拉"}）</td>
-        <td class="eq">${r.isCompL ? `|P|/A / Lfk = ${v(r.Fc_L, 3)}/${v(r.Lfk, 2)}` : `P/A / Lft = ${v(r.Ft_L, 3)}/${r.Lft}`}</td>
-        <td class="num">${ok(r.isCompL ? r.DCRc_L : r.DCRt_L)}</td><td>${judge(r.isCompL ? r.DCRc_L : r.DCRt_L)}</td>
-        <td class="num">${ok(r.isCompS ? r.DCRc_S : r.DCRt_S)}</td><td>${judge(r.isCompS ? r.DCRc_S : r.DCRt_S)}</td>
+      <tr><th>項目</th><th>公式</th><th>長期 DCR</th><th>判定</th><th>短期 DCR</th><th>判定</th><th>防火 DCR</th><th>判定</th></tr>
+      ${dcrRow("軸力（" + (dL.isComp ? "壓" : "拉") + "）", `|P|/A/(η·f)`, dL.DCRax, dS.DCRax, dF ? dF.DCRax : undefined)}
+      ${dcrRow("撓曲 M3 (x-x)", "|M3|/Zex/(fb·Cf·Cb)", dL.DCRb3, dS.DCRb3, dF ? dF.DCRb3 : undefined)}
+      ${dcrRow("撓曲 M2 (y-y)", "|M2|/Zey/(fb·Cf·Cb)", dL.DCRb2, dS.DCRb2, dF ? dF.DCRb2 : undefined)}
+      <tr style="background:#f0faf4"><td><b>P-M 複合比 Σ</b></td><td class="eq">DCRb3+DCRb2+DCRax</td>
+        <td class="num"><b>${ok(dL.DCRPM)}</b></td><td>${jd(dL.DCRPM)}</td>
+        <td class="num"><b>${ok(dS.DCRPM)}</b></td><td>${jd(dS.DCRPM)}</td>
+        ${dF ? `<td class="num"><b>${ok(dF.DCRPM)}</b></td><td>${jd(dF.DCRPM)}</td>` : '<td colspan="2" style="color:#a0aec0;text-align:center">未檢核</td>'}
       </tr>
-      <tr>
-        <td>撓曲 M3 (x-x)</td>
-        <td class="eq">|M3|/Zex / (Lfb·Cf·Cb) = ${v(r.M3L ? Math.abs(r.M3L) / r.Zex : 0, 3)}/${v(r.aFb3L, 2)}</td>
-        <td class="num">${ok(r.DCRb3L)}</td><td>${judge(r.DCRb3L)}</td>
-        <td class="num">${ok(r.DCRb3S)}</td><td>${judge(r.DCRb3S)}</td>
-      </tr>
-      <tr>
-        <td>撓曲 M2 (y-y)</td>
-        <td class="eq">|M2|/Zey / (Lfb·Cf·Cb) = ${v(r.M2L ? Math.abs(r.M2L) / r.Zey : 0, 3)}/${v(r.aFb2L, 2)}</td>
-        <td class="num">${ok(r.DCRb2L)}</td><td>${judge(r.DCRb2L)}</td>
-        <td class="num">${ok(r.DCRb2S)}</td><td>${judge(r.DCRb2S)}</td>
-      </tr>
-      <tr style="background:#f0faf4">
-        <td><b>P-M 複合比 Σ</b></td>
-        <td class="eq">DCRb3 + DCRb2 + DCRax</td>
-        <td class="num"><b>${ok(r.DCRPM_L)}</b></td><td>${judge(r.DCRPM_L)}</td>
-        <td class="num"><b>${ok(r.DCRPM_S)}</b></td><td>${judge(r.DCRPM_S)}</td>
-      </tr>
-      <tr>
-        <td>剪力 V3 (x-x)</td>
-        <td class="eq">1.5×|V3|/A / Lfs = ${v((1.5 * Math.abs(r.V3L)) / r.A, 3)}/${r.Lfsx}</td>
-        <td class="num">${ok(r.DCRs3L)}</td><td>${judge(r.DCRs3L)}</td>
-        <td class="num">${ok(r.DCRs3S)}</td><td>${judge(r.DCRs3S)}</td>
-      </tr>
-      <tr>
-        <td>剪力 V2 (y-y)</td>
-        <td class="eq">1.5×|V2|/A / Lfs = ${v((1.5 * Math.abs(r.V2L)) / r.A, 3)}/${r.Lfsy}</td>
-        <td class="num">${ok(r.DCRs2L)}</td><td>${judge(r.DCRs2L)}</td>
-        <td class="num">${ok(r.DCRs2S)}</td><td>${judge(r.DCRs2S)}</td>
-      </tr>
+      ${dcrRow("剪力 V3 (x-x)", "1.5·V3/A/fsx", dL.DCRs3, dS.DCRs3, dF ? dF.DCRs3 : undefined)}
+      ${dcrRow("剪力 V2 (y-y)", "1.5·V2/A/fsy", dL.DCRs2, dS.DCRs2, dF ? dF.DCRs2 : undefined)}
     </table>
-
     <div class="pr-verdict ${r.maxDCR <= 1 ? "ok" : "ng"}">
       控制 DCR = ${v(r.maxDCR, 3)}　　${r.maxDCR <= 1 ? "✓ 檢核通過（PASS）" : "✗ 檢核未通過（FAIL）"}
     </div>
